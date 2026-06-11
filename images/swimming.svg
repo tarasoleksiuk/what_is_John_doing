@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#b3e0f2"/>
+  <rect y="200" width="400" height="100" fill="#4aa3d6"/>
+  <text x="200" y="130" font-size="100" text-anchor="middle" dominant-baseline="middle">🏊</text>
+  <text x="200" y="270" font-size="22" text-anchor="middle" font-family="sans-serif" fill="#0d3a5c">Swimming pool</text>
+</svg>

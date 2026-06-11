@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What is John doing?</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="screen" id="start-screen">
+  <h1>What is John doing?</h1>
+  <p class="subtitle">Подивись на картинку і впиши правильне дієслово в Present Continuous.</p>
+  <div class="button-row">
+    <button class="btn btn-primary" id="play-btn">Грати</button>
+    <button class="btn btn-secondary" id="practice-btn">Практика</button>
+  </div>
+</div>
+
+<div class="screen hidden" id="game-screen">
+  <div class="top-bar">
+    <span class="mode-label" id="mode-label"></span>
+    <span class="score-label" id="score-label">Score: 0</span>
+  </div>
+
+  <div class="image-wrapper">
+    <img id="level-image" src="" alt="John">
+  </div>
+
+  <div class="sentence" id="sentence"></div>
+
+  <div class="feedback" id="feedback"></div>
+
+  <button class="btn btn-primary" id="check-btn">Check</button>
+</div>
+
+<div class="screen hidden" id="gameover-screen">
+  <h1>Game Over</h1>
+  <p class="result-text" id="result-text"></p>
+  <button class="btn btn-primary" id="restart-btn">Грати знову</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+[
+  {
+    "image": "images/football.svg",
+    "sentence": "John is ___ football.",
+    "answer": "playing"
+  },
+  {
+    "image": "images/pizza.svg",
+    "sentence": "John is ___ pizza.",
+    "answer": "eating"
+  },
+  {
+    "image": "images/book.svg",
+    "sentence": "John is ___ a book.",
+    "answer": "reading"
+  },
+  {
+    "image": "images/bike.svg",
+    "sentence": "John is ___ a bike.",
+    "answer": "riding"
+  },
+  {
+    "image": "images/swimming.svg",
+    "sentence": "John is ___ in the pool.",
+    "answer": "swimming"
+  },
+  {
+    "image": "images/cooking.svg",
+    "sentence": "John is ___ dinner.",
+    "answer": "cooking"
+  },
+  {
+    "image": "images/sleeping.svg",
+    "sentence": "John is ___ in his bed.",
+    "answer": "sleeping"
+  },
+  {
+    "image": "images/dancing.svg",
+    "sentence": "John is ___ at the party.",
+    "answer": "dancing"
+  },
+  {
+    "image": "images/running.svg",
+    "sentence": "John is ___ in the park.",
+    "answer": "running"
+  },
+  {
+    "image": "images/drinking.svg",
+    "sentence": "John is ___ water.",
+    "answer": "drinking"
+  }
+]
