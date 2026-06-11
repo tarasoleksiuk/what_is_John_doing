@@ -22,6 +22,7 @@ const checkBtn = document.getElementById("check-btn");
 
 const modeLabel = document.getElementById("mode-label");
 const scoreLabel = document.getElementById("score-label");
+const imageWrapper = document.getElementById("image-wrapper");
 const levelImage = document.getElementById("level-image");
 const sentenceEl = document.getElementById("sentence");
 const feedbackEl = document.getElementById("feedback");
@@ -88,6 +89,12 @@ function loadLevel() {
     if (e.key === "Enter") {
       checkAnswer();
     }
+  });
+  answerInput.addEventListener("focus", () => {
+    imageWrapper.classList.add("focused");
+  });
+  answerInput.addEventListener("blur", () => {
+    imageWrapper.classList.remove("focused");
   });
   sentenceEl.appendChild(answerInput);
 
