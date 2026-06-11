@@ -57,7 +57,7 @@ function startGame(selectedMode) {
   score = 0;
   currentIndex = 0;
   order = shuffle(allLevels);
-  modeLabel.textContent = mode === "practice" ? "Практика" : "Гра";
+  modeLabel.textContent = mode === "practice" ? "Practice" : "Game";
   updateScoreLabel();
   showScreen(gameScreen);
   loadLevel();
@@ -111,7 +111,7 @@ function checkAnswer() {
     answerInput.classList.add("correct");
     answerInput.disabled = true;
     feedbackEl.style.color = "#1e6e2f";
-    feedbackEl.textContent = "Правильно!";
+    feedbackEl.textContent = "Correct!";
     score++;
     updateScoreLabel();
 
@@ -133,7 +133,7 @@ function checkAnswer() {
   feedbackEl.style.color = "#e0392c";
 
   if (mode === "practice") {
-    feedbackEl.textContent = "Спробуй ще раз. Підказка: починається на \"" + level.answer[0].toUpperCase() + "\"";
+    feedbackEl.textContent = "Try again. Hint: starts with \"" + level.answer[0].toUpperCase() + "\"";
     busy = true;
     setTimeout(() => {
       answerInput.classList.remove("incorrect");
@@ -147,12 +147,12 @@ function checkAnswer() {
   // Normal mode
   if (attempts >= 2) {
     busy = true;
-    feedbackEl.textContent = "Правильна відповідь: " + level.answer;
+    feedbackEl.textContent = "Correct answer: " + level.answer;
     setTimeout(() => {
       finishGame(false);
     }, 1500);
   } else {
-    feedbackEl.textContent = "Спробуй ще раз. Підказка: починається на \"" + level.answer[0].toUpperCase() + "\"";
+    feedbackEl.textContent = "Try again. Hint: starts with \"" + level.answer[0].toUpperCase() + "\"";
     busy = true;
     setTimeout(() => {
       answerInput.classList.remove("incorrect");
@@ -165,9 +165,9 @@ function checkAnswer() {
 
 function finishGame(completedAll) {
   if (completedAll) {
-    resultText.textContent = "Вітаємо! Ти відгадав усі " + order.length + " картинок!";
+    resultText.textContent = "Congratulations! You guessed all " + order.length + " pictures!";
   } else {
-    resultText.textContent = "Ти відгадав " + score + " з " + order.length + " картинок.";
+    resultText.textContent = "You guessed " + score + " out of " + order.length + " pictures.";
   }
   showScreen(gameoverScreen);
 }
