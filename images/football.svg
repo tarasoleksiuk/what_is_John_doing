@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
-  <rect width="400" height="300" fill="#a8d5a2"/>
-  <rect y="220" width="400" height="80" fill="#7cb86f"/>
-  <text x="200" y="150" font-size="100" text-anchor="middle" dominant-baseline="middle">⚽</text>
-  <text x="200" y="270" font-size="22" text-anchor="middle" font-family="sans-serif" fill="#2f4f2f">Football</text>
-</svg>

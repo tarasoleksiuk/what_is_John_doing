@@ -1,16 +1,14 @@
 // Fallback data in case levels.json can't be loaded via fetch
 // (e.g. when the page is opened directly from disk with file://)
 const FALLBACK_LEVELS = [
-  { image: "images/football.svg", sentence: "John is ___ football.", answer: "playing" },
-  { image: "images/pizza.svg", sentence: "John is ___ pizza.", answer: "eating" },
-  { image: "images/book.svg", sentence: "John is ___ a book.", answer: "reading" },
-  { image: "images/bike.svg", sentence: "John is ___ a bike.", answer: "riding" },
-  { image: "images/swimming.svg", sentence: "John is ___ in the pool.", answer: "swimming" },
-  { image: "images/cooking.svg", sentence: "John is ___ dinner.", answer: "cooking" },
-  { image: "images/sleeping.svg", sentence: "John is ___ in his bed.", answer: "sleeping" },
-  { image: "images/dancing.svg", sentence: "John is ___ at the party.", answer: "dancing" },
-  { image: "images/running.svg", sentence: "John is ___ in the park.", answer: "running" },
-  { image: "images/drinking.svg", sentence: "John is ___ water.", answer: "drinking" }
+  { image: "images/building.png", sentence: "John is ___ a birdhouse.", answer: "building" },
+  { image: "images/cooking.png", sentence: "John is ___ dinner.", answer: "cooking" },
+  { image: "images/planting.png", sentence: "John is ___ a small green plant.", answer: "planting" },
+  { image: "images/listening.png", sentence: "John is ___ to music.", answer: "listening" },
+  { image: "images/painting.png", sentence: "John is ___ a picture.", answer: "painting" },
+  { image: "images/reading.png", sentence: "John is ___ a book.", answer: "reading" },
+  { image: "images/running.png", sentence: "John is ___ in the park.", answer: "running" },
+  { image: "images/writing.png", sentence: "John is ___ in his notebook.", answer: "writing" }
 ];
 
 const startScreen = document.getElementById("start-screen");
