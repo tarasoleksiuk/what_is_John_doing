@@ -79,6 +79,101 @@ h1 {
   opacity: 0.85;
 }
 
+.btn-small {
+  font-size: 0.9rem;
+  padding: 6px 14px;
+  border-radius: 8px;
+}
+
+/* ── Topic screen ── */
+
+#topic-screen {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  max-height: 85vh;
+  padding-bottom: 8px;
+}
+
+.topic-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.topic-header h2 {
+  margin: 0;
+  color: #2b4c7e;
+  font-size: 1.3rem;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: #2b6fde;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 4px 0;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+
+.topic-list {
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 4px;
+  padding-bottom: 8px;
+}
+
+.topic-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d0daea;
+  border-radius: 10px;
+  background: #f5f8ff;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: #2b4c7e;
+  transition: background-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.topic-btn:hover {
+  background: #e6edf9;
+}
+
+.topic-btn-locked {
+  color: #aab4c4;
+  background: #f9fafb;
+  cursor: not-allowed;
+  border-color: #e8ecf0;
+}
+
+.topic-num {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #2b6fde;
+  min-width: 22px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.topic-btn-locked .topic-num {
+  color: #c0c8d4;
+}
+
+/* ── Game screen ── */
+
 .top-bar {
   display: flex;
   align-items: center;
@@ -89,10 +184,18 @@ h1 {
   font-weight: 600;
 }
 
-.btn-small {
-  font-size: 0.9rem;
-  padding: 6px 14px;
-  border-radius: 8px;
+.mode-label {
+  cursor: pointer;
+  color: #2b4c7e;
+  font-size: 0.85rem;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mode-label:hover {
+  text-decoration: underline;
 }
 
 .image-wrapper {
@@ -111,15 +214,15 @@ h1 {
 }
 
 .sentence {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: #2b4c7e;
   margin-top: 14px;
   line-height: 2.4rem;
 }
 
 .sentence input {
-  font-size: 1.1rem;
-  width: 130px;
+  font-size: 1rem;
+  width: 160px;
   text-align: center;
   padding: 6px 8px;
   border: 2px solid #2b6fde;
@@ -144,8 +247,16 @@ h1 {
 .feedback {
   min-height: 1.4rem;
   font-size: 0.95rem;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.feedback-correct {
+  color: #1e6e2f;
+}
+
+.feedback-wrong {
   color: #e0392c;
-  margin-bottom: 12px;
 }
 
 .result-text {
@@ -155,19 +266,7 @@ h1 {
   line-height: 1.6;
 }
 
-@media (max-width: 400px) {
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  .sentence {
-    font-size: 1.1rem;
-  }
-
-  .sentence input {
-    width: 110px;
-  }
-}
+/* ── Mobile overlay: sentence on top of image ── */
 
 @media (max-width: 600px) {
   .image-wrapper.focused .sentence {
@@ -182,5 +281,19 @@ h1 {
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
     z-index: 5;
+  }
+
+  .sentence {
+    font-size: 1.05rem;
+  }
+
+  .sentence input {
+    width: 140px;
+  }
+}
+
+@media (max-width: 400px) {
+  h1 {
+    font-size: 1.5rem;
   }
 }

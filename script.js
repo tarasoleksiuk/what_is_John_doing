@@ -1,41 +1,169 @@
-// Fallback data in case levels.json can't be loaded via fetch
-// (e.g. when the page is opened directly from disk with file://)
-const FALLBACK_LEVELS = [
-  { image: "images/building.png", sentence: "John is ___ a birdhouse.", answer: "building" },
-  { image: "images/cooking.png", sentence: "John is ___ dinner.", answer: "cooking" },
-  { image: "images/planting.png", sentence: "John is ___ a small green plant.", answer: "planting" },
-  { image: "images/listening.png", sentence: "John is ___ to music.", answer: "listening" },
-  { image: "images/painting.png", sentence: "John is ___ a picture.", answer: "painting" },
-  { image: "images/reading.png", sentence: "John is ___ a book.", answer: "reading" },
-  { image: "images/running.png", sentence: "John is ___ in the park.", answer: "running" },
-  { image: "images/writing.png", sentence: "John is ___ in his notebook.", answer: "writing" }
+const TOPIC_NAMES = [
+  "People and things",
+  "Family",
+  "Relationships",
+  "Visiting people",
+  "Socializing",
+  "Clothing",
+  "Before and after",
+  "Everyday life",
+  "Transportation",
+  "Shopping",
+  "The weather",
+  "Technology",
+  "Crime, the law, and politics",
+  "Money",
+  "Time",
+  "Past and future",
+  "Making plans",
+  "The senses",
+  "Movement and progress",
+  "Studying and research",
+  "At school",
+  "At work",
+  "Careers",
+  "Business",
+  "Numbers and amounts",
+  "Success and failure",
+  "At home",
+  "Chores",
+  "Cooking",
+  "Food and drink",
+  "Free time",
+  "Health",
+  "Sports and exercise",
+  "The arts",
+  "Travel",
+  "Talking",
+  "Reading and writing",
+  "Keeping in touch",
+  "Thoughts and ideas",
+  "Explaining things",
+  "Truth and lies",
+  "Encouragement",
+  "Agreeing and disagreeing",
+  "Opinions and arguments",
+  "Emotions",
+  "Negative emotions",
+  "Making decisions",
+  "Making mistakes",
+  "Accidents and damage",
+  "Problems and solutions",
+  "Secrets and surprises",
+  '"Come," "make," and "do"',
+  '"Get" and "set"',
+  '"Go"',
+  '"Put," "take," and "give"',
+  "Exclamations"
 ];
 
-const startScreen = document.getElementById("start-screen");
-const gameScreen = document.getElementById("game-screen");
+const FALLBACK_TOPICS = [
+  {
+    id: 3,
+    title: "Relationships",
+    levels: [
+      {
+        image: "images/fit_in_with.png",
+        sentence: "John finds it really hard to ___ his art class, because everyone else there is much younger than him.",
+        answer: "fit in with",
+        phrasal_verb: "fit in with",
+        hint: "feel like you belong in a group"
+      },
+      {
+        image: "images/gang_up_on.png",
+        sentence: "Some of the older children ___ John, surrounding him and calling him names.",
+        answer: "ganged up on",
+        phrasal_verb: "gang up on",
+        hint: "form a group to hurt someone"
+      },
+      {
+        image: "images/look_down_on.png",
+        sentence: "John's neighbours ___ him because his house is smaller than theirs.",
+        answer: "look down on",
+        phrasal_verb: "look down on",
+        hint: "think you are better than another person"
+      },
+      {
+        image: "images/wear_down.png",
+        sentence: "John's little son asked for a puppy every day and eventually ___ his dad.",
+        answer: "wore down",
+        phrasal_verb: "wear down",
+        hint: "convince someone to do what you want (often by asking many times)"
+      }
+    ]
+  },
+  {
+    id: 5,
+    title: "Socializing",
+    levels: [
+      {
+        image: "images/ask_after.png",
+        sentence: "John bumped into Sandra at the park, and she was ___ him.",
+        answer: "asking after",
+        phrasal_verb: "ask after",
+        hint: "ask for news about someone"
+      }
+    ]
+  },
+  {
+    id: 19,
+    title: "Movement and progress",
+    levels: [
+      {
+        image: "images/pack_into.png",
+        sentence: "John ___ the crowded town hall together with hundreds of other people to watch the debate.",
+        answer: "packed into",
+        phrasal_verb: "pack into",
+        hint: "fit into a place in large numbers"
+      },
+      {
+        image: "images/flood_into.png",
+        sentence: "John ___ the stadium with thousands of other fans to watch the singer perform.",
+        answer: "flooded into",
+        phrasal_verb: "flood into",
+        hint: "enter a space in large numbers"
+      },
+      {
+        image: "images/spill_out_of.png",
+        sentence: "After the concert, John ___ the stadium with the crowd and headed to the train station.",
+        answer: "spilled out of",
+        phrasal_verb: "spill out of",
+        hint: "leave a space in large numbers"
+      }
+    ]
+  }
+];
+
+const startScreen   = document.getElementById("start-screen");
+const topicScreen   = document.getElementById("topic-screen");
+const gameScreen    = document.getElementById("game-screen");
 const gameoverScreen = document.getElementById("gameover-screen");
 
-const playBtn = document.getElementById("play-btn");
-const practiceBtn = document.getElementById("practice-btn");
-const restartBtn = document.getElementById("restart-btn");
-const checkBtn = document.getElementById("check-btn");
+const playBtn        = document.getElementById("play-btn");
+const practiceBtn    = document.getElementById("practice-btn");
+const topicBackBtn   = document.getElementById("topic-back-btn");
+const restartBtn     = document.getElementById("restart-btn");
+const chooseTopicBtn = document.getElementById("choose-topic-btn");
+const checkBtn       = document.getElementById("check-btn");
 
-const modeLabel = document.getElementById("mode-label");
-const scoreLabel = document.getElementById("score-label");
+const modeLabel   = document.getElementById("mode-label");
+const scoreLabel  = document.getElementById("score-label");
 const imageWrapper = document.getElementById("image-wrapper");
-const levelImage = document.getElementById("level-image");
-const sentenceEl = document.getElementById("sentence");
-const feedbackEl = document.getElementById("feedback");
-const resultText = document.getElementById("result-text");
+const levelImage  = document.getElementById("level-image");
+const sentenceEl  = document.getElementById("sentence");
+const feedbackEl  = document.getElementById("feedback");
+const resultText  = document.getElementById("result-text");
+const topicListEl = document.getElementById("topic-list");
 
-let allLevels = [];
-let order = [];
-let currentIndex = 0;
-let score = 0;
-let attempts = 0;
-let mode = "normal"; // "normal" or "practice"
-let answerInput = null;
-let busy = false; // blocks input while feedback animation is running
+let allTopicsData = [];
+let currentTopic  = null;
+let order         = [];
+let currentIndex  = 0;
+let score         = 0;
+let attempts      = 0;
+let mode          = "normal";
+let answerInput   = null;
+let busy          = false;
 
 function shuffle(array) {
   const arr = array.slice();
@@ -47,17 +175,38 @@ function shuffle(array) {
 }
 
 function showScreen(screen) {
-  [startScreen, gameScreen, gameoverScreen].forEach(s => s.classList.add("hidden"));
+  [startScreen, topicScreen, gameScreen, gameoverScreen].forEach(s => s.classList.add("hidden"));
   screen.classList.remove("hidden");
 }
 
-function startGame(selectedMode) {
-  mode = selectedMode;
+function buildTopicMenu() {
+  topicListEl.innerHTML = "";
+  const topicMap = {};
+  allTopicsData.forEach(t => { topicMap[t.id] = t; });
+
+  TOPIC_NAMES.forEach((name, i) => {
+    const id = i + 1;
+    const topicData = topicMap[id];
+    const hasLevels = topicData && topicData.levels && topicData.levels.length > 0;
+
+    const btn = document.createElement("button");
+    btn.className = "topic-btn" + (hasLevels ? "" : " topic-btn-locked");
+    btn.disabled = !hasLevels;
+    btn.innerHTML = `<span class="topic-num">${id}</span><span class="topic-name">${name}</span>`;
+    if (hasLevels) {
+      btn.addEventListener("click", () => startGame(topicData));
+    }
+    topicListEl.appendChild(btn);
+  });
+}
+
+function startGame(topicData) {
+  currentTopic = topicData;
   score = 0;
   currentIndex = 0;
-  order = shuffle(allLevels);
-  modeLabel.textContent = mode === "practice" ? "Practice" : "Game";
-  updateScoreLabel();
+  order = shuffle(topicData.levels);
+  modeLabel.textContent = topicData.title;
+  scoreLabel.textContent = "Score: 0";
   showScreen(gameScreen);
   loadLevel();
 }
@@ -70,10 +219,11 @@ function loadLevel() {
   busy = false;
   attempts = 0;
   feedbackEl.textContent = "";
+  feedbackEl.className = "feedback";
 
   const level = order[currentIndex % order.length];
   levelImage.src = level.image;
-  levelImage.alt = "John";
+  levelImage.alt = level.phrasal_verb;
 
   sentenceEl.innerHTML = "";
   const parts = level.sentence.split("___");
@@ -85,10 +235,9 @@ function loadLevel() {
   answerInput.autocomplete = "off";
   answerInput.autocapitalize = "off";
   answerInput.spellcheck = false;
-  answerInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      checkAnswer();
-    }
+
+  answerInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") checkAnswer();
   });
   answerInput.addEventListener("focus", () => {
     imageWrapper.classList.add("focused");
@@ -96,8 +245,8 @@ function loadLevel() {
   answerInput.addEventListener("blur", () => {
     imageWrapper.classList.remove("focused");
   });
-  sentenceEl.appendChild(answerInput);
 
+  sentenceEl.appendChild(answerInput);
   sentenceEl.appendChild(document.createTextNode(parts[1] || ""));
 
   answerInput.focus();
@@ -107,7 +256,7 @@ function checkAnswer() {
   if (busy || !answerInput) return;
 
   const level = order[currentIndex % order.length];
-  const userValue = answerInput.value.trim().toLowerCase();
+  const userValue  = answerInput.value.trim().toLowerCase();
   const correctValue = level.answer.trim().toLowerCase();
 
   if (userValue === correctValue) {
@@ -115,8 +264,8 @@ function checkAnswer() {
     answerInput.classList.remove("incorrect");
     answerInput.classList.add("correct");
     answerInput.disabled = true;
-    feedbackEl.style.color = "#1e6e2f";
-    feedbackEl.textContent = "Correct!";
+    feedbackEl.className = "feedback feedback-correct";
+    feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
     score++;
     updateScoreLabel();
 
@@ -127,52 +276,48 @@ function checkAnswer() {
       } else {
         loadLevel();
       }
-    }, 900);
+    }, 1800);
     return;
   }
 
-  // Wrong answer
   attempts++;
   answerInput.classList.remove("correct");
   answerInput.classList.add("incorrect");
-  feedbackEl.style.color = "#e0392c";
+  feedbackEl.className = "feedback feedback-wrong";
+  feedbackEl.textContent = level.hint;
 
   if (mode === "practice") {
-    feedbackEl.textContent = "Try again. Hint: starts with \"" + level.answer[0].toUpperCase() + "\"";
     busy = true;
     setTimeout(() => {
       answerInput.classList.remove("incorrect");
       answerInput.value = "";
       answerInput.focus();
       busy = false;
-    }, 1200);
+    }, 1500);
     return;
   }
 
   // Normal mode
   if (attempts >= 2) {
     busy = true;
-    feedbackEl.textContent = "Correct answer: " + level.answer;
-    setTimeout(() => {
-      finishGame(false);
-    }, 1500);
+    feedbackEl.textContent = "Correct answer: " + level.answer + " — " + level.hint;
+    setTimeout(() => finishGame(false), 2000);
   } else {
-    feedbackEl.textContent = "Try again. Hint: starts with \"" + level.answer[0].toUpperCase() + "\"";
     busy = true;
     setTimeout(() => {
       answerInput.classList.remove("incorrect");
       answerInput.value = "";
       answerInput.focus();
       busy = false;
-    }, 1200);
+    }, 1500);
   }
 }
 
 function finishGame(completedAll) {
   if (completedAll) {
-    resultText.textContent = "Congratulations! You guessed all " + order.length + " pictures!";
+    resultText.textContent = "Congratulations! You completed all " + order.length + " levels!";
   } else {
-    resultText.textContent = "You guessed " + score + " out of " + order.length + " pictures.";
+    resultText.textContent = "You scored " + score + " out of " + order.length + ".";
   }
   showScreen(gameoverScreen);
 }
@@ -181,16 +326,27 @@ async function loadLevels() {
   try {
     const response = await fetch("levels.json");
     if (!response.ok) throw new Error("Bad response");
-    allLevels = await response.json();
-    if (!Array.isArray(allLevels) || allLevels.length === 0) throw new Error("Empty levels");
+    const data = await response.json();
+    if (!Array.isArray(data) || data.length === 0) throw new Error("Empty");
+    allTopicsData = data;
   } catch (err) {
-    allLevels = FALLBACK_LEVELS;
+    allTopicsData = FALLBACK_TOPICS;
   }
+  buildTopicMenu();
 }
 
-playBtn.addEventListener("click", () => startGame("normal"));
-practiceBtn.addEventListener("click", () => startGame("practice"));
-restartBtn.addEventListener("click", () => showScreen(startScreen));
+playBtn.addEventListener("click", () => {
+  mode = "normal";
+  showScreen(topicScreen);
+});
+practiceBtn.addEventListener("click", () => {
+  mode = "practice";
+  showScreen(topicScreen);
+});
+topicBackBtn.addEventListener("click", () => showScreen(startScreen));
+modeLabel.addEventListener("click", () => showScreen(topicScreen));
+restartBtn.addEventListener("click", () => startGame(currentTopic));
+chooseTopicBtn.addEventListener("click", () => showScreen(topicScreen));
 checkBtn.addEventListener("click", checkAnswer);
 
 loadLevels();
