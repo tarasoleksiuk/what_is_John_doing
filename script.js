@@ -212,7 +212,7 @@ function startGame(topicData, selectedMode) {
   score = 0;
   currentIndex = 0;
   order = shuffle(topicData.levels);
-  scoreLabel.textContent = "Score: 0";
+  scoreLabel.textContent = mode === "learn" ? "1/" + order.length : "Score: 0";
   showScreen(gameScreen);
   loadLevel();
 }
@@ -307,6 +307,9 @@ function loadLevel() {
 
   learnRevealed = false;
   checkBtn.textContent = mode === "learn" ? "Show Answer" : "Check";
+  if (mode === "learn") {
+    scoreLabel.textContent = (currentIndex + 1) + "/" + order.length;
+  }
 }
 
 function checkAnswer() {
@@ -322,13 +325,15 @@ function checkAnswer() {
       letterTiles.forEach(t => { t.el.style.pointerEvents = "none"; });
       feedbackEl.className = "feedback feedback-correct";
       feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
-      checkBtn.textContent = "Next →";
+      const isLast = currentIndex + 1 >= order.length;
+      checkBtn.textContent = isLast ? "Finish" : "Next →";
       learnRevealed = true;
     } else {
-      currentIndex++;
-      if (currentIndex >= order.length) {
-        finishGame(true);
+      const isLast = currentIndex + 1 >= order.length;
+      if (isLast) {
+        showScreen(startScreen);
       } else {
+        currentIndex++;
         loadLevel();
       }
     }
