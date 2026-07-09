@@ -158,10 +158,11 @@ let currentIndex  = 0;
 let score         = 0;
 let attempts      = 0;
 let mode          = "normal";
-let busy          = false;
-let userAnswer    = "";
-let letterTiles   = [];
-let answerSlotEl  = null;
+let busy           = false;
+let userAnswer     = "";
+let letterTiles    = [];
+let answerSlotEl   = null;
+let learnRevealed  = false;
 
 const letterPanelEl = document.getElementById("letter-panel");
 
@@ -303,12 +304,36 @@ function loadLevel() {
 
   buildLetterTiles(level.answer);
   updateAnswerSlot();
+
+  learnRevealed = false;
+  checkBtn.textContent = mode === "learn" ? "Show Answer" : "Check";
 }
 
 function checkAnswer() {
   if (busy) return;
 
   const level = order[currentIndex % order.length];
+
+  if (mode === "learn") {
+    if (!learnRevealed) {
+      userAnswer = level.answer;
+      updateAnswerSlot();
+      answerSlotEl.classList.add("correct");
+      letterTiles.forEach(t => { t.el.style.pointerEvents = "none"; });
+      feedbackEl.className = "feedback feedback-correct";
+      feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
+      checkBtn.textContent = "Next →";
+      learnRevealed = true;
+    } else {
+      currentIndex++;
+      if (currentIndex >= order.length) {
+        finishGame(true);
+      } else {
+        loadLevel();
+      }
+    }
+    return;
+  }
   const userValue    = userAnswer.trim().toLowerCase();
   const correctValue = level.answer.trim().toLowerCase();
 
