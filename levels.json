@@ -58,6 +58,76 @@
         "answer": "spilled out of",
         "phrasal_verb": "spill out of",
         "hint": "leave a space in large numbers"
+      },
+      {
+        "image": "images/01_people_and_things/watch_over.png",
+        "sentence": "John ___ his young son in the park while his wife went shopping.",
+        "answer": "watched over",
+        "phrasal_verb": "watch over",
+        "hint": "make sure nothing bad happens to someone or something"
+      },
+      {
+        "image": "images/01_people_and_things/turn_on.png",
+        "sentence": "John has a bad temper — he ___ his friend the instant he suggested that John buy a new suit.",
+        "answer": "turned on",
+        "phrasal_verb": "turn on",
+        "hint": "attack someone without warning"
+      },
+      {
+        "image": "images/01_people_and_things/butter_up.png",
+        "sentence": "John has been ___ his brother because he wants to borrow his car.",
+        "answer": "buttering up",
+        "phrasal_verb": "butter up",
+        "hint": "praise or flatter someone so that they will do you a favor"
+      },
+      {
+        "image": "images/01_people_and_things/fuss_over.png",
+        "sentence": "John's aunts always ___ him whenever they come to visit.",
+        "answer": "fuss over",
+        "phrasal_verb": "fuss over",
+        "hint": "pay a lot of attention to someone"
+      },
+      {
+        "image": "images/01_people_and_things/look_up_to.png",
+        "sentence": "John really ___ his grandfather and loves listening to his stories.",
+        "answer": "looks up to",
+        "phrasal_verb": "look up to",
+        "hint": "admire someone"
+      },
+      {
+        "image": "images/01_people_and_things/gather_up.png",
+        "sentence": "John ___ the plates from the table and carried them to the kitchen.",
+        "answer": "gathered up",
+        "phrasal_verb": "gather up",
+        "hint": "collect things together"
+      },
+      {
+        "image": "images/01_people_and_things/part_with.png",
+        "sentence": "It was really hard for John to ___ his old car, which he'd had since he was a student.",
+        "answer": "part with",
+        "phrasal_verb": "part with",
+        "hint": "relinquish something important to you"
+      },
+      {
+        "image": "images/01_people_and_things/come_across.png",
+        "sentence": "While looking through things in his attic, John ___ an old portrait of his great-grandfather.",
+        "answer": "came across",
+        "phrasal_verb": "come across",
+        "hint": "find something by chance"
+      },
+      {
+        "image": "images/01_people_and_things/get_back_from.png",
+        "sentence": "John lent Dave his lawnmower a month ago, and he finally ___ from Dave.",
+        "answer": "got it back",
+        "phrasal_verb": "get back from",
+        "hint": "retrieve something"
+      },
+      {
+        "image": "images/01_people_and_things/turn_up.png",
+        "sentence": "John lost his passport ages ago, and it ___ when he was cleaning the living room.",
+        "answer": "turned up",
+        "phrasal_verb": "turn up",
+        "hint": "be found (usually by accident)"
       }
     ]
   }
