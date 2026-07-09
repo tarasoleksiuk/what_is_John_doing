@@ -1,71 +1,59 @@
 [
   {
-    "id": 3,
-    "title": "Relationships",
+    "id": 1,
+    "title": "People and things",
     "levels": [
       {
-        "image": "images/fit_in_with.png",
-        "sentence": "John finds it really hard to ___ his art class, because everyone else there is much younger than him.",
-        "answer": "fit in with",
-        "phrasal_verb": "fit in with",
-        "hint": "feel like you belong in a group"
-      },
-      {
-        "image": "images/gang_up_on.png",
-        "sentence": "Some of the older children ___ John, surrounding him and calling him names.",
-        "answer": "ganged up on",
-        "phrasal_verb": "gang up on",
-        "hint": "form a group to hurt someone"
-      },
-      {
-        "image": "images/look_down_on.png",
-        "sentence": "John's neighbours ___ him because his house is smaller than theirs.",
-        "answer": "look down on",
-        "phrasal_verb": "look down on",
-        "hint": "think you are better than another person"
-      },
-      {
-        "image": "images/wear_down.png",
-        "sentence": "John's little son asked for a puppy every day and eventually ___ his dad.",
-        "answer": "wore down",
-        "phrasal_verb": "wear down",
-        "hint": "convince someone to do what you want (often by asking many times)"
-      }
-    ]
-  },
-  {
-    "id": 5,
-    "title": "Socializing",
-    "levels": [
-      {
-        "image": "images/ask_after.png",
-        "sentence": "John bumped into Sandra at the park, and she was ___ him.",
-        "answer": "asking after",
-        "phrasal_verb": "ask after",
-        "hint": "ask for news about someone"
-      }
-    ]
-  },
-  {
-    "id": 19,
-    "title": "Movement and progress",
-    "levels": [
-      {
-        "image": "images/pack_into.png",
+        "image": "images/01_people_and_things/pack_into.png",
         "sentence": "John ___ the crowded town hall together with hundreds of other people to watch the debate.",
         "answer": "packed into",
         "phrasal_verb": "pack into",
         "hint": "fit into a place in large numbers"
       },
       {
-        "image": "images/flood_into.png",
+        "image": "images/01_people_and_things/fit_in_with.png",
+        "sentence": "John finds it really hard to ___ his art class, because everyone else there is much younger than him.",
+        "answer": "fit in with",
+        "phrasal_verb": "fit in with",
+        "hint": "feel like you belong in a group"
+      },
+      {
+        "image": "images/01_people_and_things/gang_up_on.png",
+        "sentence": "Some of the older children ___ John, surrounding him and calling him names.",
+        "answer": "ganged up on",
+        "phrasal_verb": "gang up on",
+        "hint": "form a group to hurt someone"
+      },
+      {
+        "image": "images/01_people_and_things/look_down_on.png",
+        "sentence": "John's neighbours ___ him because his house is smaller than theirs.",
+        "answer": "look down on",
+        "phrasal_verb": "look down on",
+        "hint": "think you are better than another person"
+      },
+      {
+        "image": "images/01_people_and_things/wear_down.png",
+        "sentence": "John's little son kept asking him for a puppy for months, until he finally ___ him.",
+        "answer": "wore down",
+        "phrasal_verb": "wear down",
+        "hint": "convince someone to do what you want (often by asking many times)"
+      },
+      {
+        "image": "images/01_people_and_things/ask_after.png",
+        "sentence": "John bumped into Sandra at the park, and she was ___ him.",
+        "answer": "asking after",
+        "phrasal_verb": "ask after",
+        "hint": "ask for news about someone"
+      },
+      {
+        "image": "images/01_people_and_things/flood_into.png",
         "sentence": "John ___ the stadium with thousands of other fans to watch the singer perform.",
         "answer": "flooded into",
         "phrasal_verb": "flood into",
         "hint": "enter a space in large numbers"
       },
       {
-        "image": "images/spill_out_of.png",
+        "image": "images/01_people_and_things/spill_out_of.png",
         "sentence": "After the concert, John ___ the stadium with the crowd and headed to the train station.",
         "answer": "spilled out of",
         "phrasal_verb": "spill out of",
