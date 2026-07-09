@@ -134,26 +134,22 @@ const FALLBACK_TOPICS = [
   }
 ];
 
-const startScreen   = document.getElementById("start-screen");
-const topicScreen   = document.getElementById("topic-screen");
-const gameScreen    = document.getElementById("game-screen");
+const startScreen    = document.getElementById("start-screen");
+const gameScreen     = document.getElementById("game-screen");
 const gameoverScreen = document.getElementById("gameover-screen");
 
-const playBtn        = document.getElementById("play-btn");
-const practiceBtn    = document.getElementById("practice-btn");
-const topicBackBtn   = document.getElementById("topic-back-btn");
-const restartBtn     = document.getElementById("restart-btn");
-const chooseTopicBtn = document.getElementById("choose-topic-btn");
-const checkBtn       = document.getElementById("check-btn");
+const menuBtn         = document.getElementById("menu-btn");
+const menuBtnGameover = document.getElementById("menu-btn-gameover");
+const restartBtn      = document.getElementById("restart-btn");
+const checkBtn        = document.getElementById("check-btn");
 
-const modeLabel   = document.getElementById("mode-label");
-const scoreLabel  = document.getElementById("score-label");
+const scoreLabel   = document.getElementById("score-label");
 const imageWrapper = document.getElementById("image-wrapper");
-const levelImage  = document.getElementById("level-image");
-const sentenceEl  = document.getElementById("sentence");
-const feedbackEl  = document.getElementById("feedback");
-const resultText  = document.getElementById("result-text");
-const topicListEl = document.getElementById("topic-list");
+const levelImage   = document.getElementById("level-image");
+const sentenceEl   = document.getElementById("sentence");
+const feedbackEl   = document.getElementById("feedback");
+const resultText   = document.getElementById("result-text");
+const topicListEl  = document.getElementById("topic-list");
 
 let allTopicsData = [];
 let currentTopic  = null;
@@ -174,8 +170,13 @@ function shuffle(array) {
   return arr;
 }
 
+function getSelectedMode() {
+  const radio = document.querySelector('input[name="mode"]:checked');
+  return radio ? radio.value : "normal";
+}
+
 function showScreen(screen) {
-  [startScreen, topicScreen, gameScreen, gameoverScreen].forEach(s => s.classList.add("hidden"));
+  [startScreen, gameScreen, gameoverScreen].forEach(s => s.classList.add("hidden"));
   screen.classList.remove("hidden");
 }
 
@@ -194,18 +195,18 @@ function buildTopicMenu() {
     btn.disabled = !hasLevels;
     btn.innerHTML = `<span class="topic-num">${id}</span><span class="topic-name">${name}</span>`;
     if (hasLevels) {
-      btn.addEventListener("click", () => startGame(topicData));
+      btn.addEventListener("click", () => startGame(topicData, getSelectedMode()));
     }
     topicListEl.appendChild(btn);
   });
 }
 
-function startGame(topicData) {
+function startGame(topicData, selectedMode) {
   currentTopic = topicData;
+  mode = selectedMode || "normal";
   score = 0;
   currentIndex = 0;
   order = shuffle(topicData.levels);
-  modeLabel.textContent = topicData.title;
   scoreLabel.textContent = "Score: 0";
   showScreen(gameScreen);
   loadLevel();
@@ -335,18 +336,9 @@ async function loadLevels() {
   buildTopicMenu();
 }
 
-playBtn.addEventListener("click", () => {
-  mode = "normal";
-  showScreen(topicScreen);
-});
-practiceBtn.addEventListener("click", () => {
-  mode = "practice";
-  showScreen(topicScreen);
-});
-topicBackBtn.addEventListener("click", () => showScreen(startScreen));
-modeLabel.addEventListener("click", () => showScreen(topicScreen));
-restartBtn.addEventListener("click", () => startGame(currentTopic));
-chooseTopicBtn.addEventListener("click", () => showScreen(topicScreen));
+menuBtn.addEventListener("click", () => showScreen(startScreen));
+menuBtnGameover.addEventListener("click", () => showScreen(startScreen));
+restartBtn.addEventListener("click", () => startGame(currentTopic, mode));
 checkBtn.addEventListener("click", checkAnswer);
 
 loadLevels();

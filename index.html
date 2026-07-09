@@ -10,24 +10,23 @@
 
 <div class="screen" id="start-screen">
   <h1>What is John doing?</h1>
-  <p class="subtitle">Learn English phrasal verbs with John.</p>
-  <div class="button-row">
-    <button class="btn btn-primary" id="play-btn">Play</button>
-    <button class="btn btn-secondary" id="practice-btn">Practice</button>
+  <div class="mode-selector">
+    <label class="radio-label">
+      <input type="radio" name="mode" value="normal" checked>
+      <span>Play</span>
+    </label>
+    <label class="radio-label">
+      <input type="radio" name="mode" value="practice">
+      <span>Practice</span>
+    </label>
   </div>
-</div>
-
-<div class="screen hidden" id="topic-screen">
-  <div class="topic-header">
-    <button class="btn-back" id="topic-back-btn">← Back</button>
-    <h2>Choose a topic</h2>
-  </div>
+  <p class="topic-hint">Choose a topic to start:</p>
   <div class="topic-list" id="topic-list"></div>
 </div>
 
 <div class="screen hidden" id="game-screen">
   <div class="top-bar">
-    <span class="mode-label" id="mode-label" title="Choose topic"></span>
+    <button class="btn-menu" id="menu-btn">← Menu</button>
     <button class="btn btn-primary btn-small" id="check-btn">Check</button>
     <span class="score-label" id="score-label">Score: 0</span>
   </div>
@@ -45,7 +44,7 @@
   <p class="result-text" id="result-text"></p>
   <div class="button-row">
     <button class="btn btn-primary" id="restart-btn">Play Again</button>
-    <button class="btn btn-secondary" id="choose-topic-btn">Choose Topic</button>
+    <button class="btn btn-secondary" id="menu-btn-gameover">Main Menu</button>
   </div>
 </div>
 
