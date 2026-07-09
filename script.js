@@ -158,8 +158,12 @@ let currentIndex  = 0;
 let score         = 0;
 let attempts      = 0;
 let mode          = "normal";
-let answerInput   = null;
 let busy          = false;
+let userAnswer    = "";
+let letterTiles   = [];
+let answerSlotEl  = null;
+
+const letterPanelEl = document.getElementById("letter-panel");
 
 function shuffle(array) {
   const arr = array.slice();
@@ -216,6 +220,67 @@ function updateScoreLabel() {
   scoreLabel.textContent = "Score: " + score;
 }
 
+function updateAnswerSlot() {
+  if (!answerSlotEl) return;
+  answerSlotEl.textContent = userAnswer || "···";
+}
+
+function resetTiles() {
+  userAnswer = "";
+  letterTiles.forEach(t => {
+    t.used = false;
+    t.el.classList.remove("used");
+  });
+  updateAnswerSlot();
+}
+
+function buildLetterTiles(answer) {
+  letterPanelEl.innerHTML = "";
+  userAnswer = "";
+  letterTiles = [];
+
+  const shuffled = shuffle(answer.split("").map((char, i) => ({ char, i })));
+
+  shuffled.forEach(({ char }, tileIdx) => {
+    const isSpace = char === " ";
+    const tile = document.createElement("button");
+    tile.className = "letter-tile" + (isSpace ? " tile-space" : "");
+    tile.textContent = isSpace ? "·" : char;
+
+    const tileData = { char, tileIdx, el: tile, used: false };
+    letterTiles.push(tileData);
+
+    tile.addEventListener("click", () => {
+      if (tileData.used || busy) return;
+      tileData.used = true;
+      tile.classList.add("used");
+      userAnswer += char;
+      updateAnswerSlot();
+    });
+
+    letterPanelEl.appendChild(tile);
+  });
+
+  const backBtn = document.createElement("button");
+  backBtn.className = "tile-backspace";
+  backBtn.textContent = "⌫";
+  backBtn.addEventListener("click", () => {
+    if (!userAnswer.length || busy) return;
+    const lastChar = userAnswer[userAnswer.length - 1];
+    userAnswer = userAnswer.slice(0, -1);
+    for (let i = letterTiles.length - 1; i >= 0; i--) {
+      const t = letterTiles[i];
+      if (t.used && t.char === lastChar) {
+        t.used = false;
+        t.el.classList.remove("used");
+        break;
+      }
+    }
+    updateAnswerSlot();
+  });
+  letterPanelEl.appendChild(backBtn);
+}
+
 function loadLevel() {
   busy = false;
   attempts = 0;
@@ -228,43 +293,29 @@ function loadLevel() {
 
   sentenceEl.innerHTML = "";
   const parts = level.sentence.split("___");
-
   sentenceEl.appendChild(document.createTextNode(parts[0]));
 
-  answerInput = document.createElement("input");
-  answerInput.type = "text";
-  answerInput.autocomplete = "off";
-  answerInput.autocapitalize = "off";
-  answerInput.spellcheck = false;
+  answerSlotEl = document.createElement("span");
+  answerSlotEl.className = "answer-slot";
+  sentenceEl.appendChild(answerSlotEl);
 
-  answerInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") checkAnswer();
-  });
-  answerInput.addEventListener("focus", () => {
-    imageWrapper.classList.add("focused");
-  });
-  answerInput.addEventListener("blur", () => {
-    imageWrapper.classList.remove("focused");
-  });
-
-  sentenceEl.appendChild(answerInput);
   sentenceEl.appendChild(document.createTextNode(parts[1] || ""));
 
-  answerInput.focus();
+  buildLetterTiles(level.answer);
+  updateAnswerSlot();
 }
 
 function checkAnswer() {
-  if (busy || !answerInput) return;
+  if (busy) return;
 
   const level = order[currentIndex % order.length];
-  const userValue  = answerInput.value.trim().toLowerCase();
+  const userValue    = userAnswer.trim().toLowerCase();
   const correctValue = level.answer.trim().toLowerCase();
 
   if (userValue === correctValue) {
     busy = true;
-    answerInput.classList.remove("incorrect");
-    answerInput.classList.add("correct");
-    answerInput.disabled = true;
+    answerSlotEl.classList.add("correct");
+    letterTiles.forEach(t => { t.el.style.pointerEvents = "none"; });
     feedbackEl.className = "feedback feedback-correct";
     feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
     score++;
@@ -282,17 +333,15 @@ function checkAnswer() {
   }
 
   attempts++;
-  answerInput.classList.remove("correct");
-  answerInput.classList.add("incorrect");
+  answerSlotEl.classList.add("incorrect");
   feedbackEl.className = "feedback feedback-wrong";
   feedbackEl.textContent = level.hint;
 
   if (mode === "practice") {
     busy = true;
     setTimeout(() => {
-      answerInput.classList.remove("incorrect");
-      answerInput.value = "";
-      answerInput.focus();
+      answerSlotEl.classList.remove("incorrect");
+      resetTiles();
       busy = false;
     }, 1500);
     return;
@@ -301,14 +350,14 @@ function checkAnswer() {
   // Normal mode
   if (attempts >= 2) {
     busy = true;
+    feedbackEl.className = "feedback feedback-wrong";
     feedbackEl.textContent = "Correct answer: " + level.answer + " — " + level.hint;
-    setTimeout(() => finishGame(false), 2000);
+    setTimeout(() => finishGame(false), 5000);
   } else {
     busy = true;
     setTimeout(() => {
-      answerInput.classList.remove("incorrect");
-      answerInput.value = "";
-      answerInput.focus();
+      answerSlotEl.classList.remove("incorrect");
+      resetTiles();
       busy = false;
     }, 1500);
   }
