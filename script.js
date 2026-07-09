@@ -142,7 +142,6 @@ const menuBtn         = document.getElementById("menu-btn");
 const menuBtnGameover = document.getElementById("menu-btn-gameover");
 const restartBtn      = document.getElementById("restart-btn");
 const checkBtn        = document.getElementById("check-btn");
-const toggleBtn       = document.getElementById("toggle-btn");
 
 const scoreLabel   = document.getElementById("score-label");
 const imageWrapper = document.getElementById("image-wrapper");
@@ -217,18 +216,11 @@ function updateScoreLabel() {
   scoreLabel.textContent = "Score: " + score;
 }
 
-function setSentenceVisible(visible) {
-  sentenceEl.style.visibility = visible ? "visible" : "hidden";
-  feedbackEl.style.visibility = visible ? "visible" : "hidden";
-  toggleBtn.textContent = visible ? "Hide" : "Show";
-}
-
 function loadLevel() {
   busy = false;
   attempts = 0;
   feedbackEl.textContent = "";
   feedbackEl.className = "feedback";
-  setSentenceVisible(true);
 
   const level = order[currentIndex % order.length];
   levelImage.src = level.image;
@@ -348,9 +340,5 @@ menuBtn.addEventListener("click", () => showScreen(startScreen));
 menuBtnGameover.addEventListener("click", () => showScreen(startScreen));
 restartBtn.addEventListener("click", () => startGame(currentTopic, mode));
 checkBtn.addEventListener("click", checkAnswer);
-toggleBtn.addEventListener("click", () => {
-  const isVisible = sentenceEl.style.visibility !== "hidden";
-  setSentenceVisible(!isVisible);
-});
 
 loadLevels();
