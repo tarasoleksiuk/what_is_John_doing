@@ -382,7 +382,7 @@ function loadLevel() {
   if (mode === "learn") {
     const level = order[currentIndex % order.length];
     feedbackEl.className = "feedback feedback-correct";
-    feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
+    feedbackEl.textContent = level.hint;
   }
   updateStatsDisplay();
 }
