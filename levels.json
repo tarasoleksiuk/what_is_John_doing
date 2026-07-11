@@ -262,5 +262,144 @@
         "hint": "return"
       }
     ]
+  },
+  {
+    "id": 3,
+    "title": "Relationships",
+    "levels": [
+      {
+        "image": "images/03_relationships/bring_together.gif",
+        "sentence": "John's shared interest in music has really ___ him and his friend ___.",
+        "answer": ["brought", "together"],
+        "phrasal_verb": "bring ... together",
+        "hint": "create a close relationship"
+      },
+      {
+        "image": "images/03_relationships/go_off.gif",
+        "sentence": "John has really ___ Paul since he saw him behaving very badly at the party.",
+        "answer": "gone off",
+        "phrasal_verb": "go off",
+        "hint": "like something or someone less"
+      },
+      {
+        "image": "images/03_relationships/stick_by.gif",
+        "sentence": "John ___ Cath when her restaurant went bankrupt.",
+        "answer": "stuck by",
+        "phrasal_verb": "stick by",
+        "hint": "continue to support someone who is in a difficult situation"
+      },
+      {
+        "image": "images/03_relationships/stand_by.gif",
+        "sentence": "John ___ Colin when he decided to quit college.",
+        "answer": "stood by",
+        "phrasal_verb": "stand by",
+        "hint": "support or defend someone when other people don't"
+      },
+      {
+        "image": "images/03_relationships/care_for.gif",
+        "sentence": "John and Ula really ___ each other — they've been together for 50 years.",
+        "answer": "care for",
+        "phrasal_verb": "care for",
+        "hint": "love someone or like them very much"
+      },
+      {
+        "image": "images/03_relationships/win_back.gif",
+        "sentence": "John is trying to ___ Clara ___ because he's still in love with her.",
+        "answer": ["win", "back"],
+        "phrasal_verb": "win ... back",
+        "hint": "persuade someone to start having a romantic relationship with you again"
+      },
+      {
+        "image": "images/03_relationships/fall_for.png",
+        "sentence": "John has ___ Clara — you should see how he looks at her.",
+        "answer": "fallen for",
+        "phrasal_verb": "fall for",
+        "hint": "start loving someone, fall in love"
+      },
+      {
+        "image": "images/03_relationships/set_up.png",
+        "sentence": "John's brother ___ him ___ with a woman who works at his office.",
+        "answer": ["set", "up"],
+        "phrasal_verb": "set ... up",
+        "hint": "arrange a date for someone else"
+      },
+      {
+        "image": "images/03_relationships/finish_with.png",
+        "sentence": "John has ___ Luisa, and he's very upset.",
+        "answer": "finished with",
+        "phrasal_verb": "finish with",
+        "hint": "end a relationship with someone"
+      },
+      {
+        "image": "images/03_relationships/go_out_with.png",
+        "sentence": "John started ___ Clara when they were at school.",
+        "answer": "going out with",
+        "phrasal_verb": "go out with",
+        "hint": "have a romantic relationship with someone"
+      },
+      {
+        "image": "images/03_relationships/drift_apart.png",
+        "sentence": "After John left school, he and his friends ___, because he became more interested in his career than music.",
+        "answer": "drifted apart",
+        "phrasal_verb": "drift apart",
+        "hint": "slowly become less close"
+      },
+      {
+        "image": "images/03_relationships/stick_together.png",
+        "sentence": "John and his best friends have ___ since high school.",
+        "answer": "stuck together",
+        "phrasal_verb": "stick together",
+        "hint": "stay together and support each other"
+      },
+      {
+        "image": "images/03_relationships/hear_from.png",
+        "sentence": "Although John hasn't seen Zaira for many years, he always ___ her on his birthday.",
+        "answer": "hears from",
+        "phrasal_verb": "hear from",
+        "hint": "receive news from"
+      },
+      {
+        "image": "images/03_relationships/confide_in.png",
+        "sentence": "John ___ Martha that he was in love with Pavel.",
+        "answer": "confided in",
+        "phrasal_verb": "confide in",
+        "hint": "share a secret with someone you trust"
+      },
+      {
+        "image": "images/03_relationships/fizzle_out.png",
+        "sentence": "John and Katia dated for a few weeks, but their relationship ___.",
+        "answer": "fizzled out",
+        "phrasal_verb": "fizzle out",
+        "hint": "lose energy over a period of time, slowly come to an end"
+      },
+      {
+        "image": "images/03_relationships/take_out.png",
+        "sentence": "For their first date, John ___ Helen ___ to an expensive restaurant.",
+        "answer": ["took", "out"],
+        "phrasal_verb": "take ... out",
+        "hint": "take someone on a date"
+      },
+      {
+        "image": "images/03_relationships/ask_out.png",
+        "sentence": "John ___ Helen ___ yesterday, and they're going to the movies together.",
+        "answer": ["asked", "out"],
+        "phrasal_verb": "ask ... out",
+        "hint": "invite someone to go on a date with you"
+      },
+      {
+        "image": "images/03_relationships/break_up.png",
+        "sentence": "After a huge argument, John and Maria decided to ___.",
+        "answer": "break up",
+        "phrasal_verb": "break up",
+        "hint": "end a romantic relationship"
+      },
+      {
+        "image": "images/03_relationships/get_back_together.png",
+        "sentence": "John and Mia separated a few months ago, but they recently ___.",
+        "answer": "got back together",
+        "phrasal_verb": "get back together",
+        "hint": "restart a romantic relationship"
+      }
+    ]
   }
 ]
