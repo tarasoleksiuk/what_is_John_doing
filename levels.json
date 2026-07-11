@@ -176,6 +176,90 @@
         "answer": ["named", "after"],
         "phrasal_verb": "name ... after",
         "hint": "give someone the same name as someone else"
+      },
+      {
+        "image": "images/02_family/put_in.gif",
+        "sentence": "John ___ his rabbit ___ its cage each evening before bed.",
+        "answer": ["puts", "in"],
+        "phrasal_verb": "put ... in",
+        "hint": "place inside"
+      },
+      {
+        "image": "images/02_family/warm_to.gif",
+        "sentence": "The cat doesn't usually like strangers, but he's ___ John.",
+        "answer": "warming to",
+        "phrasal_verb": "warm to",
+        "hint": "become fond of"
+      },
+      {
+        "image": "images/02_family/let_out.gif",
+        "sentence": "John ___ the cat ___ every morning after he's woken up.",
+        "answer": ["lets", "out"],
+        "phrasal_verb": "let ... out",
+        "hint": "allow to leave"
+      },
+      {
+        "image": "images/02_family/let_in.gif",
+        "sentence": "John ___ the cat ___ when it started to rain.",
+        "answer": ["let", "in"],
+        "phrasal_verb": "let ... in",
+        "hint": "allow to enter"
+      },
+      {
+        "image": "images/02_family/settle_down.gif",
+        "sentence": "After travelling for a few years, John ___ and bought a house next door to his parents.",
+        "answer": "settled down",
+        "phrasal_verb": "settle down",
+        "hint": "live in one place"
+      },
+      {
+        "image": "images/02_family/pull_together.gif",
+        "sentence": "John's family ___ when his father was unwell.",
+        "answer": "pulled together",
+        "phrasal_verb": "pull together",
+        "hint": "work as a group to deal with a difficult situation"
+      },
+      {
+        "image": "images/02_family/look_after.gif",
+        "sentence": "John's mother ___ his children while he's at work.",
+        "answer": "looks after",
+        "phrasal_verb": "look after",
+        "hint": "care for, take responsibility for"
+      },
+      {
+        "image": "images/02_family/tell_apart.gif",
+        "sentence": "John and his brother are identical twins, and it's almost impossible to ___ them ___.",
+        "answer": ["tell", "apart"],
+        "phrasal_verb": "tell ... apart",
+        "hint": "recognize the difference"
+      },
+      {
+        "image": "images/02_family/take_after.gif",
+        "sentence": "John ___ his mother — they're very similar people.",
+        "answer": "takes after",
+        "phrasal_verb": "take after",
+        "hint": "have the characteristics of a parent or relative"
+      },
+      {
+        "image": "images/02_family/wait_up.gif",
+        "sentence": "Whenever his children stay out late, John ___ until they get home.",
+        "answer": "waits up",
+        "phrasal_verb": "wait up",
+        "hint": "wait for someone to get home before going to bed"
+      },
+      {
+        "image": "images/02_family/run_away.gif",
+        "sentence": "John's dog ___ last week while they were at the park.",
+        "answer": "ran away",
+        "phrasal_verb": "run away",
+        "hint": "escape"
+      },
+      {
+        "image": "images/02_family/come_back.gif",
+        "sentence": "After a few days, John's dog ___ all by herself.",
+        "answer": "came back",
+        "phrasal_verb": "come back",
+        "hint": "return"
       }
     ]
   }
