@@ -285,6 +285,15 @@ function lockTiles() {
   });
 }
 
+// ── Image preloading ─────────────────────────────────────────────
+function preloadNext() {
+  const nextIdx = currentIndex + 1;
+  if (nextIdx < order.length) {
+    const img = new Image();
+    img.src = order[nextIdx].image;
+  }
+}
+
 // ── Load level ──────────────────────────────────────────────────
 function loadLevel() {
   busy = false;
@@ -294,7 +303,19 @@ function loadLevel() {
   feedbackEl.className = "feedback";
 
   const level = order[currentIndex % order.length];
+
+  imageWrapper.classList.add("loading");
+  levelImage.onload = () => {
+    imageWrapper.classList.remove("loading");
+    preloadNext();
+  };
+  levelImage.onerror = () => imageWrapper.classList.remove("loading");
   levelImage.src = level.image;
+  if (levelImage.complete) {
+    imageWrapper.classList.remove("loading");
+    preloadNext();
+  }
+
   levelImage.alt = level.phrasal_verb;
 
   const answers = Array.isArray(level.answer) ? level.answer : [level.answer];
