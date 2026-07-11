@@ -66,6 +66,7 @@ const menuBtn             = document.getElementById("menu-btn");
 const menuBtnGameover     = document.getElementById("menu-btn-gameover");
 const restartBtn          = document.getElementById("restart-btn");
 const checkBtn            = document.getElementById("check-btn");
+const skipBtn             = document.getElementById("skip-btn");
 
 const progressLabel       = document.getElementById("progress-label");
 const correctLabel        = document.getElementById("correct-label");
@@ -285,6 +286,42 @@ function lockTiles() {
   });
 }
 
+// ── Skip level ───────────────────────────────────────────────────
+function skipLevel() {
+  if (busy) return;
+
+  const level = order[currentIndex % order.length];
+  const answers = Array.isArray(level.answer) ? level.answer : [level.answer];
+
+  answers.forEach((ans, i) => {
+    userAnswerParts[i] = ans;
+    updateSlotDisplay(i);
+    answerSlots[i].el.classList.remove("incorrect");
+    answerSlots[i].el.classList.add("correct");
+  });
+  lockTiles();
+  feedbackEl.className = "feedback feedback-correct";
+  feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
+
+  if (mode === "normal") {
+    wrongCount++;
+    if (!wrongWords.includes(level.phrasal_verb)) {
+      wrongWords.push(level.phrasal_verb);
+    }
+    updateStatsDisplay();
+  }
+
+  busy = true;
+  setTimeout(() => {
+    currentIndex++;
+    if (mode === "normal" && currentIndex >= order.length) {
+      finishGame();
+    } else {
+      loadLevel();
+    }
+  }, 5000);
+}
+
 // ── Image preloading ─────────────────────────────────────────────
 function preloadNext() {
   const nextIdx = currentIndex + 1;
@@ -341,6 +378,7 @@ function loadLevel() {
   updateActiveSlot();
 
   checkBtn.textContent = mode === "learn" ? "Show Answer" : "Check";
+  skipBtn.classList.toggle("hidden", mode === "learn");
   updateStatsDisplay();
 }
 
@@ -579,5 +617,6 @@ menuBtn.addEventListener("click", () => showScreen(startScreen));
 menuBtnGameover.addEventListener("click", () => showScreen(startScreen));
 restartBtn.addEventListener("click", () => startGame(currentTopic, mode));
 checkBtn.addEventListener("click", checkAnswer);
+skipBtn.addEventListener("click", skipLevel);
 
 loadLevels();
