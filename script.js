@@ -57,83 +57,7 @@ const TOPIC_NAMES = [
   "Exclamations"
 ];
 
-const FALLBACK_TOPICS = [
-  {
-    id: 3,
-    title: "Relationships",
-    levels: [
-      {
-        image: "images/fit_in_with.png",
-        sentence: "John finds it really hard to ___ his art class, because everyone else there is much younger than him.",
-        answer: "fit in with",
-        phrasal_verb: "fit in with",
-        hint: "feel like you belong in a group"
-      },
-      {
-        image: "images/gang_up_on.png",
-        sentence: "Some of the older children ___ John, surrounding him and calling him names.",
-        answer: "ganged up on",
-        phrasal_verb: "gang up on",
-        hint: "form a group to hurt someone"
-      },
-      {
-        image: "images/look_down_on.png",
-        sentence: "John's neighbours ___ him because his house is smaller than theirs.",
-        answer: "look down on",
-        phrasal_verb: "look down on",
-        hint: "think you are better than another person"
-      },
-      {
-        image: "images/wear_down.png",
-        sentence: "John's little son asked for a puppy every day and eventually ___ his dad.",
-        answer: "wore down",
-        phrasal_verb: "wear down",
-        hint: "convince someone to do what you want (often by asking many times)"
-      }
-    ]
-  },
-  {
-    id: 5,
-    title: "Socializing",
-    levels: [
-      {
-        image: "images/ask_after.png",
-        sentence: "John bumped into Sandra at the park, and she was ___ him.",
-        answer: "asking after",
-        phrasal_verb: "ask after",
-        hint: "ask for news about someone"
-      }
-    ]
-  },
-  {
-    id: 19,
-    title: "Movement and progress",
-    levels: [
-      {
-        image: "images/pack_into.png",
-        sentence: "John ___ the crowded town hall together with hundreds of other people to watch the debate.",
-        answer: "packed into",
-        phrasal_verb: "pack into",
-        hint: "fit into a place in large numbers"
-      },
-      {
-        image: "images/flood_into.png",
-        sentence: "John ___ the stadium with thousands of other fans to watch the singer perform.",
-        answer: "flooded into",
-        phrasal_verb: "flood into",
-        hint: "enter a space in large numbers"
-      },
-      {
-        image: "images/spill_out_of.png",
-        sentence: "After the concert, John ___ the stadium with the crowd and headed to the train station.",
-        answer: "spilled out of",
-        phrasal_verb: "spill out of",
-        hint: "leave a space in large numbers"
-      }
-    ]
-  }
-];
-
+// ── DOM references ──────────────────────────────────────────────
 const startScreen    = document.getElementById("start-screen");
 const gameScreen     = document.getElementById("game-screen");
 const gameoverScreen = document.getElementById("gameover-screen");
@@ -143,29 +67,32 @@ const menuBtnGameover = document.getElementById("menu-btn-gameover");
 const restartBtn      = document.getElementById("restart-btn");
 const checkBtn        = document.getElementById("check-btn");
 
-const scoreLabel   = document.getElementById("score-label");
-const imageWrapper = document.getElementById("image-wrapper");
-const levelImage   = document.getElementById("level-image");
-const sentenceEl   = document.getElementById("sentence");
-const feedbackEl   = document.getElementById("feedback");
-const resultText   = document.getElementById("result-text");
-const topicListEl  = document.getElementById("topic-list");
+const scoreLabel    = document.getElementById("score-label");
+const imageWrapper  = document.getElementById("image-wrapper");
+const levelImage    = document.getElementById("level-image");
+const sentenceEl    = document.getElementById("sentence");
+const letterPanelEl = document.getElementById("letter-panel");
+const feedbackEl    = document.getElementById("feedback");
+const resultText    = document.getElementById("result-text");
+const topicListEl   = document.getElementById("topic-list");
 
-let allTopicsData = [];
-let currentTopic  = null;
-let order         = [];
-let currentIndex  = 0;
-let score         = 0;
-let attempts      = 0;
-let mode          = "normal";
+// ── State ───────────────────────────────────────────────────────
+let allTopicsData  = [];
+let currentTopic   = null;
+let order          = [];
+let currentIndex   = 0;
+let score          = 0;
+let attempts       = 0;
+let mode           = "normal";
 let busy           = false;
-let userAnswer     = "";
-let letterTiles    = [];
-let answerSlotEl   = null;
 let learnRevealed  = false;
 
-const letterPanelEl = document.getElementById("letter-panel");
+// Per-level answer state (arrays to support multiple blanks)
+let answerSlots    = []; // [{el: span, expected: string}]
+let userAnswerParts = []; // [string]
+let tileSets       = []; // [[{char, el, used}]] — one array per blank
 
+// ── Helpers ─────────────────────────────────────────────────────
 function shuffle(array) {
   const arr = array.slice();
   for (let i = arr.length - 1; i > 0; i--) {
@@ -185,6 +112,7 @@ function showScreen(screen) {
   screen.classList.remove("hidden");
 }
 
+// ── Topic menu ──────────────────────────────────────────────────
 function buildTopicMenu() {
   topicListEl.innerHTML = "";
   const topicMap = {};
@@ -206,6 +134,7 @@ function buildTopicMenu() {
   });
 }
 
+// ── Game flow ───────────────────────────────────────────────────
 function startGame(topicData, selectedMode) {
   currentTopic = topicData;
   mode = selectedMode || "normal";
@@ -221,178 +150,6 @@ function updateScoreLabel() {
   scoreLabel.textContent = "Score: " + score;
 }
 
-function updateAnswerSlot() {
-  if (!answerSlotEl) return;
-  answerSlotEl.textContent = userAnswer || "···";
-}
-
-function resetTiles() {
-  userAnswer = "";
-  letterTiles.forEach(t => {
-    t.used = false;
-    t.el.classList.remove("used");
-  });
-  updateAnswerSlot();
-}
-
-function buildLetterTiles(answer) {
-  letterPanelEl.innerHTML = "";
-  userAnswer = "";
-  letterTiles = [];
-
-  const shuffled = shuffle(answer.split("").map((char, i) => ({ char, i })));
-
-  shuffled.forEach(({ char }, tileIdx) => {
-    const isSpace = char === " ";
-    const tile = document.createElement("button");
-    tile.className = "letter-tile" + (isSpace ? " tile-space" : "");
-    tile.textContent = isSpace ? "·" : char;
-
-    const tileData = { char, tileIdx, el: tile, used: false };
-    letterTiles.push(tileData);
-
-    tile.addEventListener("click", () => {
-      if (tileData.used || busy) return;
-      tileData.used = true;
-      tile.classList.add("used");
-      userAnswer += char;
-      updateAnswerSlot();
-    });
-
-    letterPanelEl.appendChild(tile);
-  });
-
-  const backBtn = document.createElement("button");
-  backBtn.className = "tile-backspace";
-  backBtn.textContent = "⌫";
-  backBtn.addEventListener("click", () => {
-    if (!userAnswer.length || busy) return;
-    const lastChar = userAnswer[userAnswer.length - 1];
-    userAnswer = userAnswer.slice(0, -1);
-    for (let i = letterTiles.length - 1; i >= 0; i--) {
-      const t = letterTiles[i];
-      if (t.used && t.char === lastChar) {
-        t.used = false;
-        t.el.classList.remove("used");
-        break;
-      }
-    }
-    updateAnswerSlot();
-  });
-  letterPanelEl.appendChild(backBtn);
-}
-
-function loadLevel() {
-  busy = false;
-  attempts = 0;
-  feedbackEl.textContent = "";
-  feedbackEl.className = "feedback";
-
-  const level = order[currentIndex % order.length];
-  levelImage.src = level.image;
-  levelImage.alt = level.phrasal_verb;
-
-  sentenceEl.innerHTML = "";
-  const parts = level.sentence.split("___");
-  sentenceEl.appendChild(document.createTextNode(parts[0]));
-
-  answerSlotEl = document.createElement("span");
-  answerSlotEl.className = "answer-slot";
-  sentenceEl.appendChild(answerSlotEl);
-
-  sentenceEl.appendChild(document.createTextNode(parts[1] || ""));
-
-  buildLetterTiles(level.answer);
-  updateAnswerSlot();
-
-  learnRevealed = false;
-  checkBtn.textContent = mode === "learn" ? "Show Answer" : "Check";
-  if (mode === "learn") {
-    scoreLabel.textContent = (currentIndex + 1) + "/" + order.length;
-  }
-}
-
-function checkAnswer() {
-  if (busy) return;
-
-  const level = order[currentIndex % order.length];
-
-  if (mode === "learn") {
-    if (!learnRevealed) {
-      userAnswer = level.answer;
-      updateAnswerSlot();
-      answerSlotEl.classList.add("correct");
-      letterTiles.forEach(t => { t.el.style.pointerEvents = "none"; });
-      feedbackEl.className = "feedback feedback-correct";
-      feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
-      const isLast = currentIndex + 1 >= order.length;
-      checkBtn.textContent = isLast ? "Finish" : "Next →";
-      learnRevealed = true;
-    } else {
-      const isLast = currentIndex + 1 >= order.length;
-      if (isLast) {
-        showScreen(startScreen);
-      } else {
-        currentIndex++;
-        loadLevel();
-      }
-    }
-    return;
-  }
-  const userValue    = userAnswer.trim().toLowerCase();
-  const correctValue = level.answer.trim().toLowerCase();
-
-  if (userValue === correctValue) {
-    busy = true;
-    answerSlotEl.classList.add("correct");
-    letterTiles.forEach(t => { t.el.style.pointerEvents = "none"; });
-    feedbackEl.className = "feedback feedback-correct";
-    feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
-    score++;
-    updateScoreLabel();
-
-    setTimeout(() => {
-      currentIndex++;
-      if (mode === "normal" && currentIndex >= order.length) {
-        finishGame(true);
-      } else {
-        loadLevel();
-      }
-    }, 1800);
-    return;
-  }
-
-  attempts++;
-  answerSlotEl.classList.add("incorrect");
-  feedbackEl.className = "feedback feedback-wrong";
-  feedbackEl.textContent = level.hint;
-
-  if (mode === "practice") {
-    busy = true;
-    setTimeout(() => {
-      answerSlotEl.classList.remove("incorrect");
-      resetTiles();
-      busy = false;
-    }, 1500);
-    return;
-  }
-
-  // Normal mode
-  if (attempts >= 2) {
-    busy = true;
-    feedbackEl.className = "feedback feedback-wrong";
-    feedbackEl.textContent = "Correct answer: " + level.answer + " — " + level.hint;
-    setTimeout(() => finishGame(false), 5000);
-  } else {
-    busy = true;
-    setTimeout(() => {
-      answerSlotEl.classList.remove("incorrect");
-      resetTiles();
-      busy = false;
-    }, 1500);
-  }
-}
-
 function finishGame(completedAll) {
   if (completedAll) {
     resultText.textContent = "Congratulations! You completed all " + order.length + " levels!";
@@ -402,6 +159,229 @@ function finishGame(completedAll) {
   showScreen(gameoverScreen);
 }
 
+// ── Answer slots ────────────────────────────────────────────────
+function updateSlotDisplay(partIdx) {
+  if (answerSlots[partIdx]) {
+    answerSlots[partIdx].el.textContent = userAnswerParts[partIdx] || "···";
+  }
+}
+
+function allSlotsCorrect(level) {
+  const answers = Array.isArray(level.answer) ? level.answer : [level.answer];
+  return answers.every((ans, i) =>
+    (userAnswerParts[i] || "").trim().toLowerCase() === ans.trim().toLowerCase()
+  );
+}
+
+// ── Letter tiles ────────────────────────────────────────────────
+function buildLetterTiles(answers) {
+  letterPanelEl.innerHTML = "";
+  tileSets = [];
+  userAnswerParts = answers.map(() => "");
+
+  answers.forEach((answer, partIdx) => {
+    if (partIdx > 0) {
+      const sep = document.createElement("div");
+      sep.className = "tile-separator";
+      letterPanelEl.appendChild(sep);
+    }
+
+    const row = document.createElement("div");
+    row.className = "tile-row";
+
+    const chars = shuffle(answer.split("").map((char, i) => ({ char, i })));
+    const tiles = [];
+
+    chars.forEach(({ char }) => {
+      const isSpace = char === " ";
+      const tile = document.createElement("button");
+      tile.className = "letter-tile" + (isSpace ? " tile-space" : "");
+      tile.textContent = isSpace ? "·" : char;
+
+      const tileData = { char, el: tile, used: false };
+      tiles.push(tileData);
+
+      tile.addEventListener("click", () => {
+        if (tileData.used || busy) return;
+        tileData.used = true;
+        tile.classList.add("used");
+        userAnswerParts[partIdx] += char;
+        updateSlotDisplay(partIdx);
+      });
+
+      row.appendChild(tile);
+    });
+
+    // Backspace for this blank
+    const backBtn = document.createElement("button");
+    backBtn.className = "tile-backspace";
+    backBtn.textContent = "⌫";
+    backBtn.addEventListener("click", () => {
+      const current = userAnswerParts[partIdx];
+      if (!current.length || busy) return;
+      const lastChar = current[current.length - 1];
+      userAnswerParts[partIdx] = current.slice(0, -1);
+      for (let i = tiles.length - 1; i >= 0; i--) {
+        if (tiles[i].used && tiles[i].char === lastChar) {
+          tiles[i].used = false;
+          tiles[i].el.classList.remove("used");
+          break;
+        }
+      }
+      updateSlotDisplay(partIdx);
+    });
+    row.appendChild(backBtn);
+
+    tileSets.push(tiles);
+    letterPanelEl.appendChild(row);
+  });
+}
+
+function resetTiles() {
+  tileSets.forEach((tiles, partIdx) => {
+    userAnswerParts[partIdx] = "";
+    tiles.forEach(t => {
+      t.used = false;
+      t.el.classList.remove("used");
+    });
+    updateSlotDisplay(partIdx);
+  });
+}
+
+function lockTiles() {
+  tileSets.forEach(tiles => {
+    tiles.forEach(t => { t.el.style.pointerEvents = "none"; });
+  });
+}
+
+// ── Load level ──────────────────────────────────────────────────
+function loadLevel() {
+  busy = false;
+  attempts = 0;
+  learnRevealed = false;
+  feedbackEl.textContent = "";
+  feedbackEl.className = "feedback";
+
+  const level = order[currentIndex % order.length];
+  levelImage.src = level.image;
+  levelImage.alt = level.phrasal_verb;
+
+  // Normalise answer to array
+  const answers = Array.isArray(level.answer) ? level.answer : [level.answer];
+
+  // Build sentence with answer slots
+  sentenceEl.innerHTML = "";
+  answerSlots = [];
+  const parts = level.sentence.split("___");
+
+  parts.forEach((part, i) => {
+    sentenceEl.appendChild(document.createTextNode(part));
+    if (i < parts.length - 1) {
+      const slot = document.createElement("span");
+      slot.className = "answer-slot";
+      slot.textContent = "···";
+      answerSlots.push({ el: slot, expected: answers[i] || "" });
+      sentenceEl.appendChild(slot);
+    }
+  });
+
+  buildLetterTiles(answers);
+
+  checkBtn.textContent = mode === "learn" ? "Show Answer" : "Check";
+  if (mode === "learn") {
+    scoreLabel.textContent = (currentIndex + 1) + "/" + order.length;
+  }
+}
+
+// ── Check answer ────────────────────────────────────────────────
+function checkAnswer() {
+  if (busy) return;
+
+  const level = order[currentIndex % order.length];
+
+  // ── Learn mode ──
+  if (mode === "learn") {
+    if (!learnRevealed) {
+      const answers = Array.isArray(level.answer) ? level.answer : [level.answer];
+      answers.forEach((ans, i) => {
+        userAnswerParts[i] = ans;
+        updateSlotDisplay(i);
+        answerSlots[i].el.classList.add("correct");
+      });
+      lockTiles();
+      feedbackEl.className = "feedback feedback-correct";
+      feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
+      const isLast = currentIndex + 1 >= order.length;
+      checkBtn.textContent = isLast ? "Finish" : "Next →";
+      learnRevealed = true;
+    } else {
+      if (currentIndex + 1 >= order.length) {
+        showScreen(startScreen);
+      } else {
+        currentIndex++;
+        loadLevel();
+      }
+    }
+    return;
+  }
+
+  // ── Play / Practice mode ──
+  if (!allSlotsCorrect(level)) {
+    attempts++;
+    answerSlots.forEach(slot => slot.el.classList.add("incorrect"));
+    feedbackEl.className = "feedback feedback-wrong";
+    feedbackEl.textContent = level.hint;
+
+    if (mode === "practice") {
+      busy = true;
+      setTimeout(() => {
+        answerSlots.forEach(slot => slot.el.classList.remove("incorrect"));
+        resetTiles();
+        busy = false;
+      }, 1500);
+      return;
+    }
+
+    // Normal mode
+    if (attempts >= 2) {
+      busy = true;
+      const answers = Array.isArray(level.answer) ? level.answer : [level.answer];
+      feedbackEl.textContent = "Correct answer: " + answers.join(" … ") + " — " + level.hint;
+      setTimeout(() => finishGame(false), 5000);
+    } else {
+      busy = true;
+      setTimeout(() => {
+        answerSlots.forEach(slot => slot.el.classList.remove("incorrect"));
+        resetTiles();
+        busy = false;
+      }, 1500);
+    }
+    return;
+  }
+
+  // Correct!
+  busy = true;
+  answerSlots.forEach(slot => {
+    slot.el.classList.remove("incorrect");
+    slot.el.classList.add("correct");
+  });
+  lockTiles();
+  feedbackEl.className = "feedback feedback-correct";
+  feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
+  score++;
+  updateScoreLabel();
+
+  setTimeout(() => {
+    currentIndex++;
+    if (mode === "normal" && currentIndex >= order.length) {
+      finishGame(true);
+    } else {
+      loadLevel();
+    }
+  }, 1800);
+}
+
+// ── Data loading ────────────────────────────────────────────────
 async function loadLevels() {
   try {
     const response = await fetch("levels.json");
@@ -410,11 +390,12 @@ async function loadLevels() {
     if (!Array.isArray(data) || data.length === 0) throw new Error("Empty");
     allTopicsData = data;
   } catch (err) {
-    allTopicsData = FALLBACK_TOPICS;
+    allTopicsData = [];
   }
   buildTopicMenu();
 }
 
+// ── Event listeners ─────────────────────────────────────────────
 menuBtn.addEventListener("click", () => showScreen(startScreen));
 menuBtnGameover.addEventListener("click", () => showScreen(startScreen));
 restartBtn.addEventListener("click", () => startGame(currentTopic, mode));

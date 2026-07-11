@@ -274,10 +274,23 @@ h1 {
 
 .letter-panel {
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  margin: 12px 0 6px;
+}
+
+.tile-row {
+  display: flex;
   flex-wrap: wrap;
   gap: 7px;
   justify-content: center;
-  margin: 12px 0 6px;
+}
+
+.tile-separator {
+  width: 80%;
+  height: 1px;
+  background: #d0daea;
 }
 
 .letter-tile {

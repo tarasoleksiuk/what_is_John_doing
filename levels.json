@@ -130,5 +130,53 @@
         "hint": "be found (usually by accident)"
       }
     ]
+  },
+  {
+    "id": 2,
+    "title": "Family",
+    "levels": [
+      {
+        "image": "images/02_family/bring_up.png",
+        "sentence": "John has ___ his children to be kind to animals.",
+        "answer": "brought up",
+        "phrasal_verb": "bring up",
+        "hint": "teach children how to behave"
+      },
+      {
+        "image": "images/02_family/get_on_with.png",
+        "sentence": "John ___ very well ___ his elder sister, and they're always laughing together.",
+        "answer": ["gets on", "with"],
+        "phrasal_verb": "get on ... with",
+        "hint": "have a good relationship with someone"
+      },
+      {
+        "image": "images/02_family/live_with.png",
+        "sentence": "John ___ his son in a house at the edge of town.",
+        "answer": "lives with",
+        "phrasal_verb": "live with",
+        "hint": "share the same house"
+      },
+      {
+        "image": "images/02_family/grow_up.png",
+        "sentence": "John wants to be a pilot when he ___.",
+        "answer": "grows up",
+        "phrasal_verb": "grow up",
+        "hint": "develop from child to adult"
+      },
+      {
+        "image": "images/02_family/grow_out_of.png",
+        "sentence": "John has ___ his old toys and prefers playing video games now.",
+        "answer": "grown out of",
+        "phrasal_verb": "grow out of",
+        "hint": "lose interest in something as you get older"
+      },
+      {
+        "image": "images/02_family/name_after.png",
+        "sentence": "John's parents ___ him ___ his great-grandfather.",
+        "answer": ["named", "after"],
+        "phrasal_verb": "name ... after",
+        "hint": "give someone the same name as someone else"
+      }
+    ]
   }
 ]
