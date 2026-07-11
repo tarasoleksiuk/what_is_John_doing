@@ -31,8 +31,11 @@
 <div class="screen hidden" id="game-screen">
   <div class="top-bar">
     <button class="btn-menu" id="menu-btn">← Menu</button>
-    <button class="btn btn-primary btn-small" id="check-btn">Check</button>
-    <span class="score-label" id="score-label">Score: 0</span>
+    <div class="stats-bar">
+      <span id="progress-label">1/18</span>
+      <span id="correct-label" class="stat-correct">✓ 0</span>
+      <span id="wrong-label" class="stat-wrong">✗ 0</span>
+    </div>
   </div>
 
   <div class="image-wrapper" id="image-wrapper">
@@ -43,11 +46,19 @@
   <div class="letter-panel" id="letter-panel"></div>
 
   <div class="feedback" id="feedback"></div>
+
+  <div class="check-bar">
+    <button class="btn btn-primary" id="check-btn">Check</button>
+  </div>
 </div>
 
 <div class="screen hidden" id="gameover-screen">
-  <h1>Game Over</h1>
-  <p class="result-text" id="result-text"></p>
+  <h1>Statistics</h1>
+  <div class="stats-summary" id="stats-summary"></div>
+  <div id="wrong-words-section" class="hidden">
+    <p class="wrong-words-title">Words to review:</p>
+    <ul id="wrong-words-list"></ul>
+  </div>
   <div class="button-row">
     <button class="btn btn-primary" id="restart-btn">Play Again</button>
     <button class="btn btn-secondary" id="menu-btn-gameover">Main Menu</button>

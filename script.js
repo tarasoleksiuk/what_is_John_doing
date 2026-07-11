@@ -62,35 +62,41 @@ const startScreen    = document.getElementById("start-screen");
 const gameScreen     = document.getElementById("game-screen");
 const gameoverScreen = document.getElementById("gameover-screen");
 
-const menuBtn         = document.getElementById("menu-btn");
-const menuBtnGameover = document.getElementById("menu-btn-gameover");
-const restartBtn      = document.getElementById("restart-btn");
-const checkBtn        = document.getElementById("check-btn");
+const menuBtn             = document.getElementById("menu-btn");
+const menuBtnGameover     = document.getElementById("menu-btn-gameover");
+const restartBtn          = document.getElementById("restart-btn");
+const checkBtn            = document.getElementById("check-btn");
 
-const scoreLabel    = document.getElementById("score-label");
-const imageWrapper  = document.getElementById("image-wrapper");
-const levelImage    = document.getElementById("level-image");
-const sentenceEl    = document.getElementById("sentence");
-const letterPanelEl = document.getElementById("letter-panel");
-const feedbackEl    = document.getElementById("feedback");
-const resultText    = document.getElementById("result-text");
-const topicListEl   = document.getElementById("topic-list");
+const progressLabel       = document.getElementById("progress-label");
+const correctLabel        = document.getElementById("correct-label");
+const wrongLabel          = document.getElementById("wrong-label");
+const imageWrapper        = document.getElementById("image-wrapper");
+const levelImage          = document.getElementById("level-image");
+const sentenceEl          = document.getElementById("sentence");
+const letterPanelEl       = document.getElementById("letter-panel");
+const feedbackEl          = document.getElementById("feedback");
+const statsSummaryEl      = document.getElementById("stats-summary");
+const wrongWordsSectionEl = document.getElementById("wrong-words-section");
+const wrongWordsListEl    = document.getElementById("wrong-words-list");
+const topicListEl         = document.getElementById("topic-list");
 
 // ── State ───────────────────────────────────────────────────────
-let allTopicsData  = [];
-let currentTopic   = null;
-let order          = [];
-let currentIndex   = 0;
-let score          = 0;
-let attempts       = 0;
-let mode           = "normal";
-let busy           = false;
-let learnRevealed  = false;
+let allTopicsData = [];
+let currentTopic  = null;
+let order         = [];
+let currentIndex  = 0;
+let correctCount  = 0;
+let wrongCount    = 0;
+let wrongWords    = [];
+let attempts      = 0;
+let mode          = "normal";
+let busy          = false;
+let learnRevealed = false;
 
 // Per-level answer state (arrays to support multiple blanks)
-let answerSlots    = []; // [{el: span, expected: string}]
+let answerSlots     = []; // [{el: span, expected: string}]
 let userAnswerParts = []; // [string]
-let tileSets       = []; // [[{char, el, used}]] — one array per blank
+let tileSets        = []; // [[{char, el, used}]] — one array per blank
 
 // ── Helpers ─────────────────────────────────────────────────────
 function shuffle(array) {
@@ -134,27 +140,45 @@ function buildTopicMenu() {
   });
 }
 
+// ── Stats display ────────────────────────────────────────────────
+function updateStatsDisplay() {
+  const total = order.length;
+  const pos = (currentIndex % total) + 1;
+  progressLabel.textContent = pos + "/" + total;
+
+  if (mode === "learn") {
+    correctLabel.textContent = "";
+    wrongLabel.textContent   = "";
+  } else {
+    correctLabel.textContent = "✓ " + correctCount;
+    wrongLabel.textContent   = "✗ " + wrongCount;
+  }
+}
+
 // ── Game flow ───────────────────────────────────────────────────
 function startGame(topicData, selectedMode) {
   currentTopic = topicData;
-  mode = selectedMode || "normal";
-  score = 0;
+  mode         = selectedMode || "normal";
+  correctCount = 0;
+  wrongCount   = 0;
+  wrongWords   = [];
   currentIndex = 0;
-  order = shuffle(topicData.levels);
-  scoreLabel.textContent = mode === "learn" ? "1/" + order.length : "Score: 0";
+  order        = shuffle(topicData.levels);
   showScreen(gameScreen);
   loadLevel();
 }
 
-function updateScoreLabel() {
-  scoreLabel.textContent = "Score: " + score;
-}
+function finishGame() {
+  statsSummaryEl.innerHTML =
+    `<p>Completed: <strong>${order.length}</strong></p>` +
+    `<p>Correct: <strong>${correctCount}</strong></p>` +
+    `<p>Incorrect: <strong>${wrongCount}</strong></p>`;
 
-function finishGame(completedAll) {
-  if (completedAll) {
-    resultText.textContent = "Congratulations! You completed all " + order.length + " levels!";
+  if (wrongWords.length > 0) {
+    wrongWordsListEl.innerHTML = wrongWords.map(w => `<li>${w}</li>`).join("");
+    wrongWordsSectionEl.classList.remove("hidden");
   } else {
-    resultText.textContent = "You scored " + score + " out of " + order.length + ".";
+    wrongWordsSectionEl.classList.add("hidden");
   }
   showScreen(gameoverScreen);
 }
@@ -266,10 +290,8 @@ function loadLevel() {
   levelImage.src = level.image;
   levelImage.alt = level.phrasal_verb;
 
-  // Normalise answer to array
   const answers = Array.isArray(level.answer) ? level.answer : [level.answer];
 
-  // Build sentence with answer slots
   sentenceEl.innerHTML = "";
   answerSlots = [];
   const parts = level.sentence.split("___");
@@ -288,9 +310,7 @@ function loadLevel() {
   buildLetterTiles(answers);
 
   checkBtn.textContent = mode === "learn" ? "Show Answer" : "Check";
-  if (mode === "learn") {
-    scoreLabel.textContent = (currentIndex + 1) + "/" + order.length;
-  }
+  updateStatsDisplay();
 }
 
 // ── Check answer ────────────────────────────────────────────────
@@ -325,14 +345,13 @@ function checkAnswer() {
     return;
   }
 
-  // ── Play / Practice mode ──
-  if (!allSlotsCorrect(level)) {
-    attempts++;
-    answerSlots.forEach(slot => slot.el.classList.add("incorrect"));
-    feedbackEl.className = "feedback feedback-wrong";
-    feedbackEl.textContent = level.hint;
-
-    if (mode === "practice") {
+  // ── Practice mode ──
+  if (mode === "practice") {
+    if (!allSlotsCorrect(level)) {
+      attempts++;
+      answerSlots.forEach(slot => slot.el.classList.add("incorrect"));
+      feedbackEl.className = "feedback feedback-wrong";
+      feedbackEl.textContent = level.hint;
       busy = true;
       setTimeout(() => {
         answerSlots.forEach(slot => slot.el.classList.remove("incorrect"));
@@ -341,20 +360,91 @@ function checkAnswer() {
       }, 1500);
       return;
     }
+    busy = true;
+    answerSlots.forEach(slot => {
+      slot.el.classList.remove("incorrect");
+      slot.el.classList.add("correct");
+    });
+    lockTiles();
+    feedbackEl.className = "feedback feedback-correct";
+    feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
+    correctCount++;
+    updateStatsDisplay();
+    setTimeout(() => { currentIndex++; loadLevel(); }, 1800);
+    return;
+  }
 
-    // Normal mode
-    if (attempts >= 2) {
+  // ── Play (normal) mode ──
+  if (!allSlotsCorrect(level)) {
+    attempts++;
+    answerSlots.forEach(slot => slot.el.classList.add("incorrect"));
+    feedbackEl.className = "feedback feedback-wrong";
+
+    if (attempts === 1) {
+      // 1st wrong — shake only, no hint
+      feedbackEl.textContent = "";
       busy = true;
-      const answers = Array.isArray(level.answer) ? level.answer : [level.answer];
-      feedbackEl.textContent = "Correct answer: " + answers.join(" … ") + " — " + level.hint;
-      setTimeout(() => finishGame(false), 5000);
-    } else {
+      setTimeout(() => {
+        answerSlots.forEach(slot => slot.el.classList.remove("incorrect"));
+        resetTiles();
+        busy = false;
+      }, 1000);
+
+    } else if (attempts === 2) {
+      // 2nd wrong — show hint
+      feedbackEl.textContent = level.hint;
       busy = true;
       setTimeout(() => {
         answerSlots.forEach(slot => slot.el.classList.remove("incorrect"));
         resetTiles();
         busy = false;
       }, 1500);
+
+    } else if (attempts === 3) {
+      // 3rd wrong — auto-fill first letter of each blank, keep hint visible
+      feedbackEl.textContent = level.hint;
+      const answers = Array.isArray(level.answer) ? level.answer : [level.answer];
+      answers.forEach((ans, i) => {
+        const firstChar = ans[0];
+        userAnswerParts[i] = firstChar;
+        updateSlotDisplay(i);
+        for (let j = 0; j < tileSets[i].length; j++) {
+          if (!tileSets[i][j].used && tileSets[i][j].char === firstChar) {
+            tileSets[i][j].used = true;
+            tileSets[i][j].el.classList.add("used");
+            break;
+          }
+        }
+      });
+      answerSlots.forEach(slot => slot.el.classList.remove("incorrect"));
+      busy = false;
+
+    } else {
+      // 4th wrong — auto-fill all, show answer, freeze 5s, then next level
+      const answers = Array.isArray(level.answer) ? level.answer : [level.answer];
+      answers.forEach((ans, i) => {
+        userAnswerParts[i] = ans;
+        updateSlotDisplay(i);
+        answerSlots[i].el.classList.remove("incorrect");
+        answerSlots[i].el.classList.add("correct");
+      });
+      lockTiles();
+      feedbackEl.className = "feedback feedback-correct";
+      feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
+      wrongCount++;
+      if (!wrongWords.includes(level.phrasal_verb)) {
+        wrongWords.push(level.phrasal_verb);
+      }
+      updateStatsDisplay();
+      busy = true;
+      setTimeout(() => {
+        currentIndex++;
+        if (currentIndex >= order.length) {
+          finishGame();
+        } else {
+          loadLevel();
+        }
+      }, 5000);
     }
     return;
   }
@@ -368,13 +458,13 @@ function checkAnswer() {
   lockTiles();
   feedbackEl.className = "feedback feedback-correct";
   feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
-  score++;
-  updateScoreLabel();
+  correctCount++;
+  updateStatsDisplay();
 
   setTimeout(() => {
     currentIndex++;
-    if (mode === "normal" && currentIndex >= order.length) {
-      finishGame(true);
+    if (currentIndex >= order.length) {
+      finishGame();
     } else {
       loadLevel();
     }
