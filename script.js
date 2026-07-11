@@ -67,6 +67,7 @@ const menuBtnGameover     = document.getElementById("menu-btn-gameover");
 const restartBtn          = document.getElementById("restart-btn");
 const checkBtn            = document.getElementById("check-btn");
 const skipBtn             = document.getElementById("skip-btn");
+const showLetterBtn       = document.getElementById("show-letter-btn");
 
 const progressLabel       = document.getElementById("progress-label");
 const correctLabel        = document.getElementById("correct-label");
@@ -377,6 +378,7 @@ function loadLevel() {
 
   checkBtn.textContent = mode === "learn" ? "Show Answer" : "Check";
   skipBtn.classList.toggle("hidden", mode === "learn");
+  showLetterBtn.classList.toggle("hidden", mode !== "learn");
   updateStatsDisplay();
 }
 
@@ -401,6 +403,7 @@ function checkAnswer() {
       const isLast = currentIndex + 1 >= order.length;
       checkBtn.textContent = isLast ? "Finish" : "Next →";
       learnRevealed = true;
+      showLetterBtn.classList.add("hidden");
     } else {
       if (currentIndex + 1 >= order.length) {
         showScreen(startScreen);
@@ -513,6 +516,50 @@ async function loadLevels() {
   buildTopicMenu();
 }
 
+// ── Show next letter (Learn mode) ───────────────────────────────
+function showNextLetter() {
+  if (busy || learnRevealed) return;
+
+  const level = order[currentIndex % order.length];
+  const answers = Array.isArray(level.answer) ? level.answer : [level.answer];
+
+  for (let i = 0; i < answers.length; i++) {
+    const current = userAnswerParts[i] || "";
+    if (current.length < answers[i].length) {
+      const nextChar = answers[i][current.length];
+      const tiles = tileSets[i];
+      for (let j = 0; j < tiles.length; j++) {
+        if (!tiles[j].used && tiles[j].char === nextChar) {
+          tiles[j].used = true;
+          tiles[j].el.classList.add("used");
+          break;
+        }
+      }
+      userAnswerParts[i] = current + nextChar;
+      updateSlotDisplay(i);
+      activePartIdx = i;
+      updateActiveSlot();
+
+      const allComplete = answers.every((ans, idx) =>
+        (userAnswerParts[idx] || "").length === ans.length
+      );
+      if (allComplete) {
+        answers.forEach((ans, idx) => {
+          answerSlots[idx].el.classList.add("correct");
+        });
+        lockTiles();
+        feedbackEl.className = "feedback feedback-correct";
+        feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
+        const isLast = currentIndex + 1 >= order.length;
+        checkBtn.textContent = isLast ? "Finish" : "Next →";
+        learnRevealed = true;
+        showLetterBtn.classList.add("hidden");
+      }
+      return;
+    }
+  }
+}
+
 // ── Keyboard input ───────────────────────────────────────────────
 document.addEventListener("keydown", e => {
   if (gameScreen.classList.contains("hidden")) return;
@@ -577,5 +624,6 @@ menuBtnGameover.addEventListener("click", () => showScreen(startScreen));
 restartBtn.addEventListener("click", () => startGame(currentTopic, mode));
 checkBtn.addEventListener("click", checkAnswer);
 skipBtn.addEventListener("click", skipLevel);
+showLetterBtn.addEventListener("click", showNextLetter);
 
 loadLevels();
