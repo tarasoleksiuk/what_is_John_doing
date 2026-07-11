@@ -253,6 +253,11 @@ h1 {
   transition: color 0.2s, border-color 0.2s;
 }
 
+.answer-slot.active-slot {
+  border-bottom-color: #f59e0b;
+  border-bottom-width: 3px;
+}
+
 .answer-slot.correct {
   color: #1e6e2f;
   border-color: #34a853;

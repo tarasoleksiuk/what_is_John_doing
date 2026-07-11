@@ -92,6 +92,7 @@ let attempts      = 0;
 let mode          = "normal";
 let busy          = false;
 let learnRevealed = false;
+let activePartIdx = 0;
 
 // Per-level answer state (arrays to support multiple blanks)
 let answerSlots     = []; // [{el: span, expected: string}]
@@ -188,6 +189,12 @@ function updateSlotDisplay(partIdx) {
   if (answerSlots[partIdx]) {
     answerSlots[partIdx].el.textContent = userAnswerParts[partIdx] || "···";
   }
+}
+
+function updateActiveSlot() {
+  answerSlots.forEach((slot, i) => {
+    slot.el.classList.toggle("active-slot", i === activePartIdx);
+  });
 }
 
 function allSlotsCorrect(level) {
@@ -308,6 +315,9 @@ function loadLevel() {
   });
 
   buildLetterTiles(answers);
+
+  activePartIdx = 0;
+  updateActiveSlot();
 
   checkBtn.textContent = mode === "learn" ? "Show Answer" : "Check";
   updateStatsDisplay();
@@ -484,6 +494,64 @@ async function loadLevels() {
   }
   buildTopicMenu();
 }
+
+// ── Keyboard input ───────────────────────────────────────────────
+document.addEventListener("keydown", e => {
+  if (gameScreen.classList.contains("hidden")) return;
+
+  if (e.key === "Enter") {
+    e.preventDefault();
+    checkAnswer();
+    return;
+  }
+
+  if (busy) return;
+
+  if (e.key === "Tab") {
+    e.preventDefault();
+    if (tileSets.length > 1) {
+      activePartIdx = (activePartIdx + 1) % tileSets.length;
+      updateActiveSlot();
+    }
+    return;
+  }
+
+  if (e.key === "Backspace") {
+    e.preventDefault();
+    const current = userAnswerParts[activePartIdx];
+    if (!current.length) return;
+    const lastChar = current[current.length - 1];
+    userAnswerParts[activePartIdx] = current.slice(0, -1);
+    const tiles = tileSets[activePartIdx];
+    for (let i = tiles.length - 1; i >= 0; i--) {
+      if (tiles[i].used && tiles[i].char === lastChar) {
+        tiles[i].used = false;
+        tiles[i].el.classList.remove("used");
+        break;
+      }
+    }
+    updateSlotDisplay(activePartIdx);
+    return;
+  }
+
+  if (/^[a-zA-Z ]$/.test(e.key)) {
+    e.preventDefault();
+    const char = e.key.toLowerCase();
+    const tiles = tileSets[activePartIdx];
+    if (!tiles) return;
+    const tile = tiles.find(t => !t.used && t.char === char);
+    if (!tile) return;
+    tile.used = true;
+    tile.el.classList.add("used");
+    userAnswerParts[activePartIdx] += char;
+    updateSlotDisplay(activePartIdx);
+    // Auto-advance to next blank when current is full
+    if (userAnswerParts[activePartIdx].length === tiles.length && activePartIdx < tileSets.length - 1) {
+      activePartIdx++;
+      updateActiveSlot();
+    }
+  }
+});
 
 // ── Event listeners ─────────────────────────────────────────────
 menuBtn.addEventListener("click", () => showScreen(startScreen));
