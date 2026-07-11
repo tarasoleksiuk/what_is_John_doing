@@ -379,6 +379,11 @@ function loadLevel() {
   checkBtn.textContent = mode === "learn" ? "Show Answer" : "Check";
   skipBtn.classList.toggle("hidden", mode === "learn");
   showLetterBtn.classList.toggle("hidden", mode !== "learn");
+  if (mode === "learn") {
+    const level = order[currentIndex % order.length];
+    feedbackEl.className = "feedback feedback-correct";
+    feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
+  }
   updateStatsDisplay();
 }
 
