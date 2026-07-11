@@ -152,8 +152,8 @@ function updateStatsDisplay() {
     correctLabel.textContent = "";
     wrongLabel.textContent   = "";
   } else {
-    correctLabel.textContent = "✓ " + correctCount;
-    wrongLabel.textContent   = "✗ " + wrongCount;
+    correctLabel.textContent  = "✓ " + correctCount;
+    wrongLabel.textContent    = "✗ " + wrongCount;
   }
 }
 
@@ -303,18 +303,16 @@ function skipLevel() {
   feedbackEl.className = "feedback feedback-correct";
   feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
 
-  if (mode === "normal") {
-    wrongCount++;
-    if (!wrongWords.includes(level.phrasal_verb)) {
-      wrongWords.push(level.phrasal_verb);
-    }
-    updateStatsDisplay();
+  wrongCount++;
+  if (!wrongWords.includes(level.phrasal_verb)) {
+    wrongWords.push(level.phrasal_verb);
   }
+  updateStatsDisplay();
 
   busy = true;
   setTimeout(() => {
     currentIndex++;
-    if (mode === "normal" && currentIndex >= order.length) {
+    if (currentIndex >= order.length) {
       finishGame();
     } else {
       loadLevel();
@@ -411,35 +409,6 @@ function checkAnswer() {
         loadLevel();
       }
     }
-    return;
-  }
-
-  // ── Practice mode ──
-  if (mode === "practice") {
-    if (!allSlotsCorrect(level)) {
-      attempts++;
-      answerSlots.forEach(slot => slot.el.classList.add("incorrect"));
-      feedbackEl.className = "feedback feedback-wrong";
-      feedbackEl.textContent = level.hint;
-      busy = true;
-      setTimeout(() => {
-        answerSlots.forEach(slot => slot.el.classList.remove("incorrect"));
-        resetTiles();
-        busy = false;
-      }, 1500);
-      return;
-    }
-    busy = true;
-    answerSlots.forEach(slot => {
-      slot.el.classList.remove("incorrect");
-      slot.el.classList.add("correct");
-    });
-    lockTiles();
-    feedbackEl.className = "feedback feedback-correct";
-    feedbackEl.textContent = level.phrasal_verb + " — " + level.hint;
-    correctCount++;
-    updateStatsDisplay();
-    setTimeout(() => { currentIndex++; loadLevel(); }, 1800);
     return;
   }
 
