@@ -450,17 +450,7 @@ function checkAnswer() {
     feedbackEl.className = "feedback feedback-wrong";
 
     if (attempts === 1) {
-      // 1st wrong — shake only, no hint
-      feedbackEl.textContent = "";
-      busy = true;
-      setTimeout(() => {
-        answerSlots.forEach(slot => slot.el.classList.remove("incorrect"));
-        resetTiles();
-        busy = false;
-      }, 1000);
-
-    } else if (attempts === 2) {
-      // 2nd wrong — show hint
+      // 1st wrong — shake + show hint
       feedbackEl.textContent = level.hint;
       busy = true;
       setTimeout(() => {
@@ -469,8 +459,8 @@ function checkAnswer() {
         busy = false;
       }, 1500);
 
-    } else if (attempts === 3) {
-      // 3rd wrong — auto-fill first letter of each blank, keep hint visible
+    } else if (attempts === 2) {
+      // 2nd wrong — auto-fill first letter of each blank
       feedbackEl.textContent = level.hint;
       const answers = Array.isArray(level.answer) ? level.answer : [level.answer];
       answers.forEach((ans, i) => {
