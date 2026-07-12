@@ -229,7 +229,7 @@ function buildLetterTiles(answers) {
       const isSpace = char === " ";
       const tile = document.createElement("button");
       tile.className = "letter-tile" + (isSpace ? " tile-space" : "");
-      tile.textContent = isSpace ? "·" : char;
+      tile.textContent = isSpace ? "_" : char;
 
       const tileData = { char, el: tile, used: false };
       tiles.push(tileData);
