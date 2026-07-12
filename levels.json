@@ -401,5 +401,137 @@
         "hint": "restart a romantic relationship"
       }
     ]
+  },
+  {
+    "id": 4,
+    "title": "Visiting people",
+    "levels": [
+      {
+        "image": "images/04_visiting_people/pop_in.png",
+        "sentence": "John ___ to see Brian on Saturday morning.",
+        "answer": "popped in",
+        "phrasal_verb": "pop in",
+        "hint": "visit someone at their home (informal)"
+      },
+      {
+        "image": "images/04_visiting_people/stick_around.png",
+        "sentence": "John and Brian chatted for hours, and Brian suggested that John ___ for dinner.",
+        "answer": "stick around",
+        "phrasal_verb": "stick around",
+        "hint": "stay somewhere longer than planned"
+      },
+      {
+        "image": "images/04_visiting_people/turn_up.png",
+        "sentence": "Angelo ___ at John's house at 6am, while John was still in bed.",
+        "answer": "turned up",
+        "phrasal_verb": "turn up",
+        "hint": "arrive (often unexpectedly)"
+      },
+      {
+        "image": "images/04_visiting_people/invite_in.png",
+        "sentence": "After chatting on the doorstep for a moment, Malik ___ John ___.",
+        "answer": ["invited", "in"],
+        "phrasal_verb": "invite ... in",
+        "hint": "ask someone to enter your house"
+      },
+      {
+        "image": "images/04_visiting_people/call_in.png",
+        "sentence": "On his way home from the beach, John ___ to see his grandma.",
+        "answer": "called in",
+        "phrasal_verb": "call in",
+        "hint": "visit someone at their home (often on your way elsewhere)"
+      },
+      {
+        "image": "images/04_visiting_people/show_out.png",
+        "sentence": "Following the interview, the secretary ___ John ___.",
+        "answer": ["showed", "out"],
+        "phrasal_verb": "show ... out",
+        "hint": "take someone to the door as they leave"
+      },
+      {
+        "image": "images/04_visiting_people/have_over.png",
+        "sentence": "John's new neighbours ___ him ___ for dinner last night.",
+        "answer": ["had", "over"],
+        "phrasal_verb": "have ... over",
+        "hint": "have people as guests at your home"
+      },
+      {
+        "image": "images/04_visiting_people/show_around.png",
+        "sentence": "John's neighbours ___ him ___ their beautiful home.",
+        "answer": ["showed", "around"],
+        "phrasal_verb": "show ... around",
+        "hint": "give someone a tour"
+      },
+      {
+        "image": "images/04_visiting_people/invite_along_to.png",
+        "sentence": "It looks like John has ___ everyone he knows ___ the party.",
+        "answer": ["invited", "along to"],
+        "phrasal_verb": "invite ... along to",
+        "hint": "ask someone to go somewhere with you"
+      },
+      {
+        "image": "images/04_visiting_people/swing_by.png",
+        "sentence": "While John is in town, his friend told him to ___, because it would be good to see him.",
+        "answer": "swing by",
+        "phrasal_verb": "swing by",
+        "hint": "visit someone's house on your way somewhere else"
+      },
+      {
+        "image": "images/04_visiting_people/come_into.png",
+        "sentence": "John ___ the house and took off his coat.",
+        "answer": "came into",
+        "phrasal_verb": "come into",
+        "hint": "enter a place"
+      },
+      {
+        "image": "images/04_visiting_people/drop_in.png",
+        "sentence": "Yesterday afternoon, John ___ for a cup of coffee and a chat.",
+        "answer": "dropped in",
+        "phrasal_verb": "drop in",
+        "hint": "visit someone at their home (informal)"
+      },
+      {
+        "image": "images/04_visiting_people/stop_off.png",
+        "sentence": "On his way home from the gym, John ___ at the supermarket to get something for dinner.",
+        "answer": "stopped off",
+        "phrasal_verb": "stop off",
+        "hint": "stop during a journey to do something"
+      },
+      {
+        "image": "images/04_visiting_people/snoop_around.png",
+        "sentence": "While everyone was in the garden, John found Klaus ___ the kitchen.",
+        "answer": "snooping around",
+        "phrasal_verb": "snoop around",
+        "hint": "secretly look for something"
+      },
+      {
+        "image": "images/04_visiting_people/invite_over.png",
+        "sentence": "Omar and Beth would like to ___ John ___ for a barbecue to celebrate Beth's birthday.",
+        "answer": ["invite", "over"],
+        "phrasal_verb": "invite ... over",
+        "hint": "invite someone to your home"
+      },
+      {
+        "image": "images/04_visiting_people/come_over.png",
+        "sentence": "Omar told John to ___ any time after 2pm.",
+        "answer": "come over",
+        "phrasal_verb": "come over",
+        "hint": "visit someone (at their home)"
+      },
+      {
+        "image": "images/04_visiting_people/bring_along.png",
+        "sentence": "John ___ the kids ___ to the barbecue.",
+        "answer": ["brought", "along"],
+        "phrasal_verb": "bring ... along",
+        "hint": "bring someone or something with you"
+      },
+      {
+        "image": "images/04_visiting_people/stay_over.png",
+        "sentence": "John ended up ___ at Beth and Omar's house.",
+        "answer": "staying over",
+        "phrasal_verb": "stay over",
+        "hint": "stay at someone's house overnight"
+      }
+    ]
   }
 ]
